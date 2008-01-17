@@ -1,12 +1,30 @@
 <?php
 /*
 Plugin Name: Commenter Emails
-Version: 0.9
+Version: 0.9.5
 Author: Scott Reilly
 Author URI: http://www.coffee2code.com
-Description: Extract a listing of all commenter emails 
+Description: Extract a listing of all commenter emails
 
-Copyright (c) 2007 by Scott Reilly (aka coffee2code)
+Compatible with WordPress 2.2+ and 2.3+.
+
+=>> Read the accompanying readme.txt file for more information.  Also, visit the plugin's homepage
+=>> for more information and the latest updates
+
+Installation:
+
+1. Download the file http://www.coffee2code.com/wp-plugins/commenter-emails.zip and unzip it into your 
+/wp-content/plugins/ directory.
+-OR-
+Copy and paste the the code ( http://www.coffee2code.com/wp-plugins/commenter-emails.phps ) into a file called 
+commenter-emails.php, and put that file into your /wp-content/plugins/ directory.
+2. Activate the plugin through the 'Plugins' admin menu in WordPress
+3. View the commenter email information reported in the WordPress admin via Comments -> Commenter Emails
+
+*/
+
+/*
+Copyright (c) 2007-2008 by Scott Reilly (aka coffee2code)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation 
 files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, 
@@ -21,8 +39,12 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRA
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
+if ( !class_exists('CommenterEmails') ) :
+
 class CommenterEmails {
-	
+	var $show_csv_button = true;	// Setting to determine if the plugin's admin page should show the CSV button
+	var $show_emails = true;		// Setting to determine if the plugin's admin page should show the list of emails
+
 	function CommenterEmails() {
 		add_action('admin_menu', array(&$this, 'admin_menu'));
 		$this->handle_csv_download();
@@ -30,7 +52,14 @@ class CommenterEmails {
 
 	function get_emails() {
 		global $wpdb;
-		$emails = $wpdb->get_col("SELECT DISTINCT comment_author_email FROM {$wpdb->comments} ORDER BY comment_author_email ASC");
+		$sql = "SELECT DISTINCT comment_author_email 
+				FROM {$wpdb->comments} 
+				WHERE
+					comment_approved = '1' AND
+					comment_author_email != '' AND
+					(comment_type = '' OR comment_type = 'comment') 
+				ORDER BY comment_author_email ASC";
+		$emails = $wpdb->get_col($sql);
 		return $emails;
 	}
 
@@ -52,12 +81,9 @@ class CommenterEmails {
 	}
 
 	function admin_page() {
-		$show_csv_button = true;
-		$show_emails = true;
-
 		$emails = $this->get_emails();
 		$emails_count = count($emails);
-		$emails = implode(',<br />', $this->get_emails());
+		$emails = implode('<br />', $this->get_emails());
 
 		echo <<<HTML
 		<div class='wrap'>
@@ -66,7 +92,7 @@ class CommenterEmails {
 		</div>
 HTML;
 
-		if ($show_csv_button) {
+		if ( $this->show_csv_button ) {
 		echo <<<HTML
 		<div class='wrap'>
 			<h2>Download</h2>
@@ -81,7 +107,7 @@ HTML;
 HTML;
 		}
 
-		if ($show_emails) {
+		if ( $this->show_emails ) {
 		echo <<<HTML
 		<div class='wrap'>
 			<h2>All Commenter Emails</h2>
@@ -93,11 +119,10 @@ HTML;
 HTML;
 		}
 	}
-}
-// Get the ball rolling
-function init_CommenterEmails() {
-	global $commenter_emails;
+} // end CommenterEmails
+
+endif; // end if !class_exists()
+if ( class_exists('CommenterEmails') ) :
 	$commenter_emails = new CommenterEmails();
-}
-add_action('init', 'init_CommenterEmails');
+endif;
 ?>
