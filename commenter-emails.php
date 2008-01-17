@@ -4,7 +4,7 @@ Plugin Name: Commenter Emails
 Version: 0.9.5
 Author: Scott Reilly
 Author URI: http://www.coffee2code.com
-Description: Extract a listing of all commenter emails
+Description: Extract a listing of all commenter emails.
 
 Compatible with WordPress 2.2+ and 2.3+.
 
