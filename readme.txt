@@ -3,9 +3,9 @@ Contributors: coffee2code
 Donate link: http://coffee2code.com
 Tags: commenter, email, visitor, comment
 Requires at least: 2.2
-Tested up to: 2.3.2
+Tested up to: 2.5
 Stable tag: trunk
-Version: 0.9.5
+Version: 1.0
 
 Extract a listing of all commenter emails
 
