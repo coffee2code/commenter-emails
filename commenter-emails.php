@@ -1,13 +1,20 @@
 <?php
 /*
 Plugin Name: Commenter Emails
-Version: 1.0.1
+Version: 1.1
 Plugin URI: http://coffee2code.com/wp-plugins/commenter-emails
 Author: Scott Reilly
 Author URI: http://coffee2code.com
 Description: Extract a listing of all commenter emails.
 
-Compatible with WordPress 2.2+, 2.3+, 2.5+, 2.6+, 2.7+.
+Via the admin page added by the plugin, Comments -> Commenter Emails, the admin is presented with the following information:
+* A total count of all unique commenters to the blog
+* A button to download the entire list of unique commenters' email addresses in CSV (comma-separated values) format
+* The entire list of unique commenters' email addresses
+
+The plugin only considers approved comments and does not exclude from its listing any known emails (i.e. admin and post author emails).
+
+Compatible with WordPress 2.2+, 2.3+, 2.5+, 2.6+, 2.7+, 2.8+.
 
 =>> Read the accompanying readme.txt file for more information.  Also, visit the plugin's homepage
 =>> for more information and the latest updates
@@ -42,10 +49,13 @@ if ( !class_exists('CommenterEmails') ) :
 class CommenterEmails {
 	var $show_csv_button = true;	// Setting to determine if the plugin's admin page should show the CSV button
 	var $show_emails = true;		// Setting to determine if the plugin's admin page should show the list of emails
+	var $csv_filename = 'commenter-emails.csv';
 
 	function CommenterEmails() {
-		add_action('admin_menu', array(&$this, 'admin_menu'));
-		$this->handle_csv_download();
+		if ( is_admin() ) {
+			add_action('admin_menu', array(&$this, 'admin_menu'));
+			$this->handle_csv_download();
+		}
 	}
 
 	function get_emails() {
@@ -62,12 +72,13 @@ class CommenterEmails {
 	}
 
 	function handle_csv_download() {
-		if ( (basename($_SERVER['PHP_SELF']) == 'edit-comments.php') && 
+		global $pagenow;
+		if ( ('edit-comments.php' == $pagenow) && 
 			 $_GET['page'] && ($_GET['page'] == basename(__FILE__)) && 
 			($_GET['download_csv'] == '1')
 		   ) {
 			header('Content-type: text/csv');
-			header('Content-Disposition: attachment; filename="commenter-emails.csv"');
+			header('Content-Disposition: attachment; filename="'.$this->csv_filename.'"');
 			echo implode(',', $this->get_emails());
 			exit();
 		}
@@ -75,16 +86,18 @@ class CommenterEmails {
 
 	function admin_menu() {
 		// Add menu under Comments:
-	    add_submenu_page('edit-comments.php', 'Commenter Emails', 'Commenter Emails', 10, basename(__FILE__), array(&$this, 'admin_page'));
+		add_submenu_page('edit-comments.php', 'Commenter Emails', 'Commenter Emails', 10, basename(__FILE__), array(&$this, 'admin_page'));
 	}
 
 	function admin_page() {
 		$emails = $this->get_emails();
 		$emails_count = count($emails);
-		$emails = implode('<br />', $this->get_emails());
+		$emails = implode('<br />', $emails);
+		$logo = plugins_url() . '/' . basename($_GET['page'], '.php') . '/c2c_minilogo.png';
 
 		echo <<<HTML
 		<div class='wrap'>
+			<div class='icon32' style='width:44px;'><img src='{$logo}' alt='A plugin by coffee2code' /><br /></div>
 			<h2>Commenter Emails</h2>
 			<p>There are $emails_count unique commenter email addresses for this blog.</p>
 		</div>
@@ -116,7 +129,6 @@ HTML;
 		</div>
 HTML;
 		}
-		$logo = get_option('siteurl') . '/wp-content/plugins/' . basename($_GET['page'], '.php') . '/c2c_minilogo.png';
 		echo <<<END
 		<style type="text/css">
 			#c2c {
@@ -154,6 +166,6 @@ END;
 endif; // end if !class_exists()
 
 if ( class_exists('CommenterEmails') )
-	$commenter_emails = new CommenterEmails();
+	new CommenterEmails();
 
 ?>

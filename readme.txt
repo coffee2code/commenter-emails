@@ -1,11 +1,11 @@
 === Commenter Emails ===
 Contributors: coffee2code
-Donate link: http://coffee2code.com
-Tags: commenter, email, visitor, comment
+Donate link: http://coffee2code.com/donate
+Tags: commenter, email, visitor, comment, coffee2code
 Requires at least: 2.2
-Tested up to: 2.7.1
-Stable tag: trunk
-Version: 1.0.1
+Tested up to: 2.8
+Stable tag: 1.1
+Version: 1.1
 
 Extract a listing of all commenter emails.
 
