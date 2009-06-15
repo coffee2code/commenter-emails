@@ -2,7 +2,7 @@
 Contributors: coffee2code
 Donate link: http://coffee2code.com/donate
 Tags: commenter, email, visitor, comment, coffee2code
-Requires at least: 2.2
+Requires at least: 2.6
 Tested up to: 2.8
 Stable tag: 1.1
 Version: 1.1
