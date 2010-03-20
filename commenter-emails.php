@@ -1,20 +1,21 @@
 <?php
 /*
 Plugin Name: Commenter Emails
-Version: 1.1
+Version: 1.1.1
 Plugin URI: http://coffee2code.com/wp-plugins/commenter-emails
 Author: Scott Reilly
 Author URI: http://coffee2code.com
 Description: Extract a listing of all commenter emails.
 
 Via the admin page added by the plugin, Comments -> Commenter Emails, the admin is presented with the following information:
+
 * A total count of all unique commenters to the blog
 * A button to download the entire list of unique commenters' email addresses in CSV (comma-separated values) format
 * The entire list of unique commenters' email addresses
 
 The plugin only considers approved comments and does not exclude from its listing any known emails (i.e. admin and post author emails).
 
-Compatible with WordPress 2.2+, 2.3+, 2.5+, 2.6+, 2.7+, 2.8+.
+Compatible with WordPress 2.6+, 2.7+, 2.8+.
 
 =>> Read the accompanying readme.txt file for more information.  Also, visit the plugin's homepage
 =>> for more information and the latest updates
@@ -85,8 +86,9 @@ class CommenterEmails {
 	}
 
 	function admin_menu() {
-		// Add menu under Comments:
-		add_submenu_page('edit-comments.php', 'Commenter Emails', 'Commenter Emails', 10, basename(__FILE__), array(&$this, 'admin_page'));
+		// Add menu under Comments
+		add_submenu_page('edit-comments.php', 'Commenter Emails', 'Commenter Emails',
+			apply_filters('manage_commenter_emails_options', 'manage_options'), basename(__FILE__), array(&$this, 'admin_page'));
 	}
 
 	function admin_page() {
