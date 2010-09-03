@@ -1,40 +1,31 @@
 <?php
+/**
+ * @package Commenter_Emails
+ * @author Scott Reilly
+ * @version 1.2
+ */
 /*
 Plugin Name: Commenter Emails
-Version: 1.1.1
-Plugin URI: http://coffee2code.com/wp-plugins/commenter-emails
+Version: 1.2
+Plugin URI: http://coffee2code.com/wp-plugins/commenter-emails/
 Author: Scott Reilly
 Author URI: http://coffee2code.com
 Description: Extract a listing of all commenter emails.
 
-Via the admin page added by the plugin, Comments -> Commenter Emails, the admin is presented with the following information:
+Compatible with WordPress 2.6+, 2.7+, 2.8+, 2.9+, 3.0+.
 
-* A total count of all unique commenters to the blog
-* A button to download the entire list of unique commenters' email addresses in CSV (comma-separated values) format
-* The entire list of unique commenters' email addresses
-
-The plugin only considers approved comments and does not exclude from its listing any known emails (i.e. admin and post author emails).
-
-Compatible with WordPress 2.6+, 2.7+, 2.8+.
-
-=>> Read the accompanying readme.txt file for more information.  Also, visit the plugin's homepage
-=>> for more information and the latest updates
-
-Installation:
-
-1. Download the file http://coffee2code.com/wp-plugins/commenter-emails.zip and unzip it into your 
-/wp-content/plugins/ directory.
-2. Activate the plugin through the 'Plugins' admin menu in WordPress
-3. View the commenter email information reported in the WordPress admin via Comments -> Commenter Emails
+=>> Read the accompanying readme.txt file for instructions and documentation.
+=>> Also, visit the plugin's homepage for additional information and updates.
+=>> Or visit: http://wordpress.org/extend/plugins/commenter-emails/
 
 */
 
 /*
-Copyright (c) 2007-2009 by Scott Reilly (aka coffee2code)
+Copyright (c) 2007-2010 by Scott Reilly (aka coffee2code)
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation 
-files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, 
-modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the 
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
+files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy,
+modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the
 Software is furnished to do so, subject to the following conditions:
 
 The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
@@ -45,57 +36,105 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRA
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-if ( !class_exists('CommenterEmails') ) :
+if ( is_admin() && !class_exists( 'c2c_CommenterEmails' ) ) :
 
-class CommenterEmails {
-	var $show_csv_button = true;	// Setting to determine if the plugin's admin page should show the CSV button
-	var $show_emails = true;		// Setting to determine if the plugin's admin page should show the list of emails
-	var $csv_filename = 'commenter-emails.csv';
+class c2c_CommenterEmails {
+	var $show_csv_button = '';	// Setting to determine if the plugin's admin page should show the CSV button
+	var $show_emails = '';		// Setting to determine if the plugin's admin page should show the list of emails
+	var $csv_filename = '';
+	var $plugin_basename = '';
 
-	function CommenterEmails() {
-		if ( is_admin() ) {
-			add_action('admin_menu', array(&$this, 'admin_menu'));
-			$this->handle_csv_download();
-		}
+	/**
+	 * Constructor
+	 */
+	function c2c_CommenterEmails() {
+		$this->plugin_basename = plugin_basename( __FILE__ );
+		add_action( 'init', array( &$this, 'init' ) );
 	}
 
+	/**
+	 * Initialize hooks and data
+	 */
+	function init() {
+		$this->handle_csv_download();
+		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+
+		$this->show_csv_button = apply_filters( 'c2c_commenter_emails_show_csv_button', true );
+		$this->show_emails     = apply_filters( 'c2c_commenter_emails_show_emails', true );
+		$this->csv_filename    = apply_filters( 'c2c_commenter_emails_filename', 'commenter-emails.csv' );
+	}
+
+	/**
+	 * Query database to obtain the list of commenter email addresses.
+	 * Only checks comments that are approved, have a author email, and are of the comment_type 'comment' (or '').
+	 *
+	 * @return array List of email addresses
+	 */
 	function get_emails() {
 		global $wpdb;
-		$sql = "SELECT DISTINCT comment_author_email 
-				FROM {$wpdb->comments} 
+		$sql = "SELECT DISTINCT comment_author_email
+				FROM {$wpdb->comments}
 				WHERE
 					comment_approved = '1' AND
 					comment_author_email != '' AND
-					(comment_type = '' OR comment_type = 'comment') 
+					(comment_type = '' OR comment_type = 'comment')
 				ORDER BY comment_author_email ASC";
-		$emails = $wpdb->get_col($sql);
+		$emails = $wpdb->get_col( $sql );
 		return $emails;
 	}
 
+	/**
+	 * Handler to download commenter emails directly as CSV file.
+	 *
+	 * @return void (Text is streamed to file to user)
+	 */
 	function handle_csv_download() {
 		global $pagenow;
-		if ( ('edit-comments.php' == $pagenow) && 
-			 $_GET['page'] && ($_GET['page'] == basename(__FILE__)) && 
-			($_GET['download_csv'] == '1')
+		if ( ( 'edit-comments.php' == $pagenow ) &&
+			isset( $_GET['page'] ) && ( $_GET['page'] == basename( __FILE__ ) ) &&
+			isset( $_GET['download_csv'] ) && ( $_GET['download_csv'] == '1' )
 		   ) {
-			header('Content-type: text/csv');
-			header('Content-Disposition: attachment; filename="'.$this->csv_filename.'"');
-			echo implode(',', $this->get_emails());
+			header( 'Content-type: text/csv' );
+			header( 'Content-Disposition: attachment; filename="' . $this->csv_filename . '"' );
+			echo implode( ',', $this->get_emails() );
 			exit();
 		}
 	}
 
+	/**
+	 * Creates the admin menu.
+	 *
+	 * @return void
+	 */
 	function admin_menu() {
+		add_filter( 'plugin_action_links_' . $this->plugin_basename, array( &$this, 'plugin_action_links' ) );
 		// Add menu under Comments
-		add_submenu_page('edit-comments.php', 'Commenter Emails', 'Commenter Emails',
-			apply_filters('manage_commenter_emails_options', 'manage_options'), basename(__FILE__), array(&$this, 'admin_page'));
+		add_comments_page( 'Commenter Emails', 'Commenter Emails',
+			apply_filters( 'manage_commenter_emails_options', 'manage_options' ), $this->plugin_basename, array( &$this, 'admin_page' ) );
 	}
 
+	/**
+	 * Adds a 'Settings' link to the plugin action links.
+	 *
+	 * @param array $action_links The current action links
+	 * @return array The action links
+	 */
+	function plugin_action_links( $action_links ) {
+		$settings_link = '<a href="edit-comments.php?page='.$this->plugin_basename.'">' . __( 'Listing' ) . '</a>';
+		array_unshift( $action_links, $settings_link );
+		return $action_links;
+	}
+
+	/**
+	 * Outputs the contents of the plugin's admin page.
+	 *
+	 * @return void
+	 */
 	function admin_page() {
 		$emails = $this->get_emails();
-		$emails_count = count($emails);
-		$emails = implode('<br />', $emails);
-		$logo = plugins_url() . '/' . basename($_GET['page'], '.php') . '/c2c_minilogo.png';
+		$emails_count = count( $emails );
+		$emails = implode( '<br />', $emails );
+		$logo = plugins_url( 'c2c_minilogo.png', __FILE__ );
 
 		echo <<<HTML
 		<div class='wrap'>
@@ -103,6 +142,7 @@ class CommenterEmails {
 			<h2>Commenter Emails</h2>
 			<p>There are $emails_count unique commenter email addresses for this blog.</p>
 		</div>
+
 HTML;
 
 		if ( $this->show_csv_button ) {
@@ -110,13 +150,14 @@ HTML;
 		<div class='wrap'>
 			<h2>Download</h2>
 			<p><form action="" method="get">
-				<label for="submit">Download the email addresses as a CSV file : 
+				<label for="submit">Download the email addresses as a CSV file :
 					<input type="submit" name="submit" value="Download" />
 				</label>
 				<input type="hidden" name="page" value="{$_GET['page']}">
 				<input type="hidden" name="download_csv" value="1" />
 			</form></p>
 		</div>
+
 HTML;
 		}
 
@@ -129,6 +170,7 @@ HTML;
 			</p>
 			<p>$emails_count commenter emails listed.</p>
 		</div>
+
 HTML;
 		}
 		echo <<<END
@@ -161,13 +203,13 @@ HTML;
 			<span><a href="http://coffee2code.com/donate" title="Please consider a donation">Did you find this plugin useful?</a></span>
 			</div>
 		</div>
+
 END;
 	}
-} // end CommenterEmails
+} // end c2c_CommenterEmails
+
+$GLOBALS['c2c_commenter_emails'] = new c2c_CommenterEmails();
 
 endif; // end if !class_exists()
-
-if ( class_exists('CommenterEmails') )
-	new CommenterEmails();
 
 ?>
