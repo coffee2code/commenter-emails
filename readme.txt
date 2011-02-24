@@ -3,9 +3,9 @@ Contributors: coffee2code
 Donate link: http://coffee2code.com/donate
 Tags: commenter, commenters, email, address, contact, visitor, comment, coffee2code
 Requires at least: 2.6
-Tested up to: 3.0.1
-Stable tag: 1.2
-Version: 1.2
+Tested up to: 3.1
+Stable tag: 1.3
+Version: 1.3
 
 Extract a listing of all commenter emails.
 
@@ -21,6 +21,8 @@ Via the admin page added by the plugin, `Comments -> Commenter Emails`, the admi
 * The entire list of unique commenters' email addresses
 
 The plugin only considers approved comments and does not exclude from its listing any known emails (i.e. admin and post author emails).
+
+Links: [Plugin Homepage]:(http://coffee2code.com/wp-plugins/commenter-emails/) | [Author Homepage]:(http://coffee2code.com)
 
 
 == Installation ==
@@ -109,6 +111,12 @@ function change_ce_cap( $capability ) {
 
 == Changelog ==
 
+= 1.3 =
+* Switch from object instantiation to direct class invocation
+* Explicitly declare all functions public static and class variables private static
+* Note compatibility through WP 3.1+
+* Update copyright date (2011)
+
 = 1.2 =
 * Allow filtering of default filename for saved csv file, via 'c2c_commenter_emails_filename' filter
 * Allow filtering of whether settings page should actually list the email addresses, via 'c2c_commenter_emails_show_csv_button' filter
@@ -148,5 +156,8 @@ function change_ce_cap( $capability ) {
 
 == Upgrade Notice ==
 
-= 3.0 =
+= 1.3 =
+Minor update: slight implementation modification; updated copyright date; other minor code changes.
+
+= 1.2 =
 Minor update. Highlights: added multiple hooks to facilitate customization; added plugin listing link; renamed class; verified WP 3.0 compatibility; misc. non-functionality changes.

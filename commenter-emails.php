@@ -2,17 +2,17 @@
 /**
  * @package Commenter_Emails
  * @author Scott Reilly
- * @version 1.2
+ * @version 1.3
  */
 /*
 Plugin Name: Commenter Emails
-Version: 1.2
+Version: 1.3
 Plugin URI: http://coffee2code.com/wp-plugins/commenter-emails/
 Author: Scott Reilly
 Author URI: http://coffee2code.com
 Description: Extract a listing of all commenter emails.
 
-Compatible with WordPress 2.6+, 2.7+, 2.8+, 2.9+, 3.0+.
+Compatible with WordPress 2.6+, 2.7+, 2.8+, 2.9+, 3.0+, 3.1+.
 
 =>> Read the accompanying readme.txt file for instructions and documentation.
 =>> Also, visit the plugin's homepage for additional information and updates.
@@ -21,7 +21,7 @@ Compatible with WordPress 2.6+, 2.7+, 2.8+, 2.9+, 3.0+.
 */
 
 /*
-Copyright (c) 2007-2010 by Scott Reilly (aka coffee2code)
+Copyright (c) 2007-2011 by Scott Reilly (aka coffee2code)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation
 files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy,
@@ -39,29 +39,29 @@ IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 if ( is_admin() && !class_exists( 'c2c_CommenterEmails' ) ) :
 
 class c2c_CommenterEmails {
-	var $show_csv_button = '';	// Setting to determine if the plugin's admin page should show the CSV button
-	var $show_emails = '';		// Setting to determine if the plugin's admin page should show the list of emails
-	var $csv_filename = '';
-	var $plugin_basename = '';
+	private static $show_csv_button = '';	// Setting to determine if the plugin's admin page should show the CSV button
+	private static $show_emails = '';		// Setting to determine if the plugin's admin page should show the list of emails
+	private static $csv_filename = '';
+	private static $plugin_basename = '';
 
 	/**
 	 * Constructor
 	 */
-	function c2c_CommenterEmails() {
-		$this->plugin_basename = plugin_basename( __FILE__ );
-		add_action( 'init', array( &$this, 'init' ) );
+	public static function init() {
+		self::$plugin_basename = plugin_basename( __FILE__ );
+		add_action( 'init', array( __CLASS__, 'do_init' ) );
 	}
 
 	/**
 	 * Initialize hooks and data
 	 */
-	function init() {
-		$this->handle_csv_download();
-		add_action( 'admin_menu', array( &$this, 'admin_menu' ) );
+	public static function do_init() {
+		self::handle_csv_download();
+		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ) );
 
-		$this->show_csv_button = apply_filters( 'c2c_commenter_emails_show_csv_button', true );
-		$this->show_emails     = apply_filters( 'c2c_commenter_emails_show_emails', true );
-		$this->csv_filename    = apply_filters( 'c2c_commenter_emails_filename', 'commenter-emails.csv' );
+		self::$show_csv_button = apply_filters( 'c2c_commenter_emails_show_csv_button', true );
+		self::$show_emails     = apply_filters( 'c2c_commenter_emails_show_emails', true );
+		self::$csv_filename    = apply_filters( 'c2c_commenter_emails_filename', 'commenter-emails.csv' );
 	}
 
 	/**
@@ -70,7 +70,7 @@ class c2c_CommenterEmails {
 	 *
 	 * @return array List of email addresses
 	 */
-	function get_emails() {
+	public static function get_emails() {
 		global $wpdb;
 		$sql = "SELECT DISTINCT comment_author_email
 				FROM {$wpdb->comments}
@@ -88,15 +88,15 @@ class c2c_CommenterEmails {
 	 *
 	 * @return void (Text is streamed to file to user)
 	 */
-	function handle_csv_download() {
+	public static function handle_csv_download() {
 		global $pagenow;
 		if ( ( 'edit-comments.php' == $pagenow ) &&
 			isset( $_GET['page'] ) && ( $_GET['page'] == basename( __FILE__ ) ) &&
 			isset( $_GET['download_csv'] ) && ( $_GET['download_csv'] == '1' )
 		   ) {
 			header( 'Content-type: text/csv' );
-			header( 'Content-Disposition: attachment; filename="' . $this->csv_filename . '"' );
-			echo implode( ',', $this->get_emails() );
+			header( 'Content-Disposition: attachment; filename="' . self::$csv_filename . '"' );
+			echo implode( ',', self::get_emails() );
 			exit();
 		}
 	}
@@ -106,11 +106,11 @@ class c2c_CommenterEmails {
 	 *
 	 * @return void
 	 */
-	function admin_menu() {
-		add_filter( 'plugin_action_links_' . $this->plugin_basename, array( &$this, 'plugin_action_links' ) );
+	public static function admin_menu() {
+		add_filter( 'plugin_action_links_' . self::$plugin_basename, array( __CLASS__, 'plugin_action_links' ) );
 		// Add menu under Comments
 		add_comments_page( 'Commenter Emails', 'Commenter Emails',
-			apply_filters( 'manage_commenter_emails_options', 'manage_options' ), $this->plugin_basename, array( &$this, 'admin_page' ) );
+			apply_filters( 'manage_commenter_emails_options', 'manage_options' ), self::$plugin_basename, array( __CLASS__, 'admin_page' ) );
 	}
 
 	/**
@@ -119,8 +119,8 @@ class c2c_CommenterEmails {
 	 * @param array $action_links The current action links
 	 * @return array The action links
 	 */
-	function plugin_action_links( $action_links ) {
-		$settings_link = '<a href="edit-comments.php?page='.$this->plugin_basename.'">' . __( 'Listing' ) . '</a>';
+	public static function plugin_action_links( $action_links ) {
+		$settings_link = '<a href="edit-comments.php?page=' . self::$plugin_basename.'">' . __( 'Listing' ) . '</a>';
 		array_unshift( $action_links, $settings_link );
 		return $action_links;
 	}
@@ -130,8 +130,8 @@ class c2c_CommenterEmails {
 	 *
 	 * @return void
 	 */
-	function admin_page() {
-		$emails = $this->get_emails();
+	public static function admin_page() {
+		$emails = self::get_emails();
 		$emails_count = count( $emails );
 		$emails = implode( '<br />', $emails );
 		$logo = plugins_url( 'c2c_minilogo.png', __FILE__ );
@@ -145,7 +145,7 @@ class c2c_CommenterEmails {
 
 HTML;
 
-		if ( $this->show_csv_button ) {
+		if ( self::$show_csv_button ) {
 		echo <<<HTML
 		<div class='wrap'>
 			<h2>Download</h2>
@@ -161,7 +161,7 @@ HTML;
 HTML;
 		}
 
-		if ( $this->show_emails ) {
+		if ( self::$show_emails ) {
 		echo <<<HTML
 		<div class='wrap'>
 			<h2>All Commenter Emails</h2>
@@ -208,7 +208,7 @@ END;
 	}
 } // end c2c_CommenterEmails
 
-$GLOBALS['c2c_commenter_emails'] = new c2c_CommenterEmails();
+c2c_CommenterEmails::init();
 
 endif; // end if !class_exists()
 
