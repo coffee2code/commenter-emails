@@ -3,9 +3,9 @@ Contributors: coffee2code
 Donate link: http://coffee2code.com/donate
 Tags: commenter, commenters, email, address, contact, visitor, comment, coffee2code
 Requires at least: 2.6
-Tested up to: 3.1
-Stable tag: 1.3
-Version: 1.3
+Tested up to: 3.2
+Stable tag: 2.0
+Version: 2.0
 
 Extract a listing of all commenter emails.
 
@@ -22,7 +22,7 @@ Via the admin page added by the plugin, `Comments -> Commenter Emails`, the admi
 
 The plugin only considers approved comments and does not exclude from its listing any known emails (i.e. admin and post author emails).
 
-Links: [Plugin Homepage]:(http://coffee2code.com/wp-plugins/commenter-emails/) | [Author Homepage]:(http://coffee2code.com)
+Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/commenter-emails/) | [Author Homepage](http://coffee2code.com)
 
 
 == Installation ==
@@ -39,7 +39,7 @@ Links: [Plugin Homepage]:(http://coffee2code.com/wp-plugins/commenter-emails/) |
 
 == Filters ==
 
-The plugin exposes four filters for hooking.  Typically code making use of these hooks are put into the active theme's functions.php file.
+The plugin exposes six filters for hooking.  Typically, customizations utilizing these hooks would be put into your active theme's functions.php file, or used by another plugin.
 
 = c2c_commenter_emails_show_csv_button (filter) =
 
@@ -56,7 +56,7 @@ Example:
 add_filter( 'c2c_commenter_emails_show_csv_button', '__return_false' );
 `
 
-= c2c_commenter_emails_show_emails (action) =
+= c2c_commenter_emails_show_emails (filter) =
 
 The 'c2c_commenter_emails_show_emails' hook allows you to customize whether the listing of emails should appear on the plugin's admin settings page.  By default this is true.
 
@@ -71,7 +71,7 @@ Example:
 add_filter( 'c2c_commenter_emails_show_emails', '__return_false' );
 `
 
-= c2c_commenter_emails_filename (action) =
+= c2c_commenter_emails_filename (filter) =
 
 The 'c2c_commenter_emails_filename' hook allows you to customize the name used for the .csv file when being downloaded.  By default this is 'commenter-emails.csv'.
 
@@ -90,7 +90,7 @@ function change_ce_filename( $filename ) {
 }
 `
 
-= manage_commenter_emails_options (action) =
+= manage_commenter_emails_options (filter) =
 
 The 'manage_commenter_emails_options' hook allows you to customize the capability required to access the commenter emails admin page.  You should be certain that you've created the capability and assigned that capability to the desired user(s).  By default this is the 'manage_options' capability.
 
@@ -108,8 +108,58 @@ function change_ce_cap( $capability ) {
 }
 `
 
+= c2c_commenter_emails_fields (filter) =
+
+The 'c2c_commenter_emails_fields' hook allows you to customize the user fields included in the download CSV file.  By default the CSV file includes comment_author and comment_author_email.
+
+Arguments:
+
+* $fields (array): Array of field names. Items must correspond to columns in the comments table. By default this is `array( 'comment_author', 'comment_author_email' )`. Whether explicitly included or not, 'comment_author_email' will always be output in the CSV.
+
+Example:
+
+`
+// Include the commenter's URL address in the download CSV
+add_filter( 'c2c_commenter_emails_fields', 'change_ce_fields' );
+function change_ce_fields( $fields ) {
+	$fields[] = 'comment_author_url';
+	return $fields;
+}
+`
+
+= c2c_commenter_emails_field_separator (filter) =
+
+The 'c2c_commenter_emails_field_separator' hook allows you to customize the separator used in the CSV file.
+
+Arguments:
+
+* $separator (string): String to be used as the data separator in the CSV file. Default is ','.
+
+Example:
+
+`
+// Change the data fields separator to '|'
+add_filter( 'c2c_commenter_emails_field_separator', 'change_ce_field_separator' );
+function change_ce_field_separator( $separator ) {
+	return '|';
+}
+`
+
 
 == Changelog ==
+
+= 2.0 =
+* Fix bug preventing download of .csv file
+* Fix bug where filters were applied too late (after download handling)
+* Add optional arguments $fields and $output to get_emails(); method now returns array of user objects
+* Add filter 'c2c_commenter_emails_fields' to allow overriding default fields included in CSV file
+* Add filter 'c2c_commenter_emails_field_separator' to allow overriding field separator
+* Improve csv generation by using fputcsv()
+* Now also list commenter names in addition to emails on the plugin's settings page
+* Change format of download filename, e.g. comment-emails-2011-06-26-1123.csv (where numbers represent date and time of download)
+* Note compatibility through WP 3.2+
+* Minor code formatting change (spacing)
+* Fix plugin homepage and author links in description in readme.txt
 
 = 1.3 =
 * Switch from object instantiation to direct class invocation
@@ -155,6 +205,9 @@ function change_ce_cap( $capability ) {
 
 
 == Upgrade Notice ==
+
+= 2.0 =
+Recommended update: fixed critical functional bugs; list commenter names alongside email; changed download filename format; added filters; noted compatibility through WP 3.2+; and more.
 
 = 1.3 =
 Minor update: slight implementation modification; updated copyright date; other minor code changes.

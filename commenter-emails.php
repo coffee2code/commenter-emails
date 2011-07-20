@@ -2,22 +2,25 @@
 /**
  * @package Commenter_Emails
  * @author Scott Reilly
- * @version 1.3
+ * @version 2.0
  */
 /*
 Plugin Name: Commenter Emails
-Version: 1.3
+Version: 2.0
 Plugin URI: http://coffee2code.com/wp-plugins/commenter-emails/
 Author: Scott Reilly
 Author URI: http://coffee2code.com
 Description: Extract a listing of all commenter emails.
 
-Compatible with WordPress 2.6+, 2.7+, 2.8+, 2.9+, 3.0+, 3.1+.
+Compatible with WordPress 2.6+, 2.7+, 2.8+, 2.9+, 3.0+, 3.1+, 3.2+.
 
 =>> Read the accompanying readme.txt file for instructions and documentation.
 =>> Also, visit the plugin's homepage for additional information and updates.
 =>> Or visit: http://wordpress.org/extend/plugins/commenter-emails/
 
+TODO:
+	* Update screenshots for WP3.2
+	* l10n
 */
 
 /*
@@ -36,14 +39,13 @@ LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRA
 IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-if ( is_admin() && !class_exists( 'c2c_CommenterEmails' ) ) :
+if ( is_admin() && ! class_exists( 'c2c_CommenterEmails' ) ) :
 
 class c2c_CommenterEmails {
-	private static $show_csv_button = '';	// Setting to determine if the plugin's admin page should show the CSV button
-	private static $show_emails = '';		// Setting to determine if the plugin's admin page should show the list of emails
-	private static $csv_filename = '';
+	private static $show_csv_button = ''; // Setting to determine if the plugin's admin page should show the CSV button
+	private static $show_emails     = ''; // Setting to determine if the plugin's admin page should show the list of emails
+	private static $csv_filename    = '';
 	private static $plugin_basename = '';
-
 	/**
 	 * Constructor
 	 */
@@ -56,30 +58,48 @@ class c2c_CommenterEmails {
 	 * Initialize hooks and data
 	 */
 	public static function do_init() {
-		self::handle_csv_download();
-		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ) );
-
 		self::$show_csv_button = apply_filters( 'c2c_commenter_emails_show_csv_button', true );
 		self::$show_emails     = apply_filters( 'c2c_commenter_emails_show_emails', true );
-		self::$csv_filename    = apply_filters( 'c2c_commenter_emails_filename', 'commenter-emails.csv' );
+		self::$csv_filename    = apply_filters( 'c2c_commenter_emails_filename', 'commenter-emails-' .
+			mysql2date( 'Y-m-d-Hi', current_time( 'mysql' ) ) . '.csv' );
+
+		self::handle_csv_download();
+
+		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ) );
 	}
 
 	/**
 	 * Query database to obtain the list of commenter email addresses.
-	 * Only checks comments that are approved, have a author email, and are of the comment_type 'comment' (or '').
+	 * Only checks comments that are approved, have a author email, and are
+	 * of the comment_type 'comment' (or '').
 	 *
-	 * @return array List of email addresses
+	 * Only one entry is returned per email address.  If a given email address
+	 * has multiple instances in the database, each with different names, then
+	 * the most recent comment will be used to obtain any additional field data
+	 * such as comment_author, etc.
+	 *
+	 * @param array $fields
+	 * @param string $output (optional) Any of ARRAY_A | ARRAY_N | OBJECT | OBJECT_K constants. See WP docs for wpdb::get_results() for more info
+	 * @return mixed List of email addresses
 	 */
-	public static function get_emails() {
+	public static function get_emails( $fields = array( 'comment_author_email', 'comment_author' ), $output = ARRAY_N ) {
 		global $wpdb;
-		$sql = "SELECT DISTINCT comment_author_email
-				FROM {$wpdb->comments}
+
+		// comment_author_email must be one of the fields
+		if ( ! in_array( 'comment_author_email', $fields ) )
+			array_unshift( $fields,  'comment_author_email' );
+
+		$fields = implode( ', ', $fields );
+		$sql = "SELECT $fields
+				FROM {$wpdb->comments} t1
+				INNER JOIN ( SELECT MAX(comment_ID) AS id FROM {$wpdb->comments} GROUP BY comment_author_email ) t2 ON t1.comment_ID = t2.id
 				WHERE
 					comment_approved = '1' AND
 					comment_author_email != '' AND
 					(comment_type = '' OR comment_type = 'comment')
+				GROUP BY comment_author_email
 				ORDER BY comment_author_email ASC";
-		$emails = $wpdb->get_col( $sql );
+		$emails = $wpdb->get_results( $sql, $output );
 		return $emails;
 	}
 
@@ -91,12 +111,23 @@ class c2c_CommenterEmails {
 	public static function handle_csv_download() {
 		global $pagenow;
 		if ( ( 'edit-comments.php' == $pagenow ) &&
-			isset( $_GET['page'] ) && ( $_GET['page'] == basename( __FILE__ ) ) &&
+			isset( $_GET['page'] ) && ( $_GET['page'] == plugin_basename( __FILE__ ) ) &&
 			isset( $_GET['download_csv'] ) && ( $_GET['download_csv'] == '1' )
 		   ) {
 			header( 'Content-type: text/csv' );
+			header( 'Cache-Control: no-store, no-cache' );
 			header( 'Content-Disposition: attachment; filename="' . self::$csv_filename . '"' );
-			echo implode( ',', self::get_emails() );
+
+			$outstream = fopen( "php://output", 'w' );
+
+			$fields    = apply_filters( 'c2c_commenter_emails_fields', array( 'comment_author', 'comment_author_email' ) );
+			$field_sep = apply_filters( 'c2c_commenter_emails_field_separator', ',' );
+
+			foreach ( (array) self::get_emails( $fields ) as $item )
+				fputcsv( $outstream, $item, $field_sep, '"' );
+
+			fclose( $outstream );
+
 			exit();
 		}
 	}
@@ -133,7 +164,6 @@ class c2c_CommenterEmails {
 	public static function admin_page() {
 		$emails = self::get_emails();
 		$emails_count = count( $emails );
-		$emails = implode( '<br />', $emails );
 		$logo = plugins_url( 'c2c_minilogo.png', __FILE__ );
 
 		echo <<<HTML
@@ -165,9 +195,15 @@ HTML;
 		echo <<<HTML
 		<div class='wrap'>
 			<h2>All Commenter Emails</h2>
-			<p>
-				$emails
-			</p>
+			<table>
+			<tr><th>Email</th><th>Name</th></tr>
+HTML;
+
+			foreach ( $emails as $item )
+				echo '<tr><td>' . $item[0] . '</td><td>' . $item[1] . '</td></tr>';
+
+		echo <<<HTML
+			</table>
 			<p>$emails_count commenter emails listed.</p>
 		</div>
 
@@ -210,6 +246,6 @@ END;
 
 c2c_CommenterEmails::init();
 
-endif; // end if !class_exists()
+endif; // end if ! class_exists()
 
 ?>
