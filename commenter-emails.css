@@ -1,0 +1,21 @@
+#c2c-ce {
+	text-align:center;
+	color:#888;
+	background-color:#ffffef;
+	padding:5px 0 0;
+	margin-top:12px;
+	border-style:solid;
+	border-color:#dadada;
+	border-width:1px 0;
+}
+#c2c-ce div {
+	margin:0 auto;
+	padding:5px 40px 0 0;
+	width:45%;
+	min-height:40px;
+	background:url('c2c_minilogo.png') no-repeat top right;
+}
+#c2c-ce span {
+	display:block;
+	font-size:x-small;
+}

@@ -2,10 +2,10 @@
 Contributors: coffee2code
 Donate link: http://coffee2code.com/donate
 Tags: commenter, commenters, email, address, contact, visitor, comment, coffee2code
-Requires at least: 2.6
-Tested up to: 3.2
-Stable tag: 2.0
-Version: 2.0
+Requires at least: 3.1
+Tested up to: 3.3
+Stable tag: 2.1
+Version: 2.1
 
 Extract a listing of all commenter emails.
 
@@ -18,11 +18,11 @@ Via the admin page added by the plugin, `Comments -> Commenter Emails`, the admi
 
 * A total count of all unique commenters to the blog
 * A button to download the entire list of unique commenters' email addresses in CSV (comma-separated values) format
-* The entire list of unique commenters' email addresses
+* The entire list of unique commenters' email addresses and names
 
 The plugin only considers approved comments and does not exclude from its listing any known emails (i.e. admin and post author emails).
 
-Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/commenter-emails/) | [Author Homepage](http://coffee2code.com)
+Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/commenter-emails/) | [Plugin Directory Page](http://wordpress.org/extend/plugins/commenter-emails/) | [Author Homepage](http://coffee2code.com)
 
 
 == Installation ==
@@ -148,6 +148,22 @@ function change_ce_field_separator( $separator ) {
 
 == Changelog ==
 
+= 2.1 =
+* Add support for localization
+* Add .pot
+* Move CSS into commenter-emails.css and enqueue
+* Add enqueue_admin_css()
+* Store plugin settings page id in private static 'plugin_page'
+* Hook download_csv() to plugin-specific load action
+* Add version() to return plugin version
+* Minor code reformatting (spacing)
+* Note compatibility through WP 3.3+
+* Drop support for versions of WP older than 3.1
+* Update screenshot (now based on WP 3.3)
+* Add 'Domain Path' directive to top of main plugin file
+* Add link to plugin directory page to readme.txt
+* Update copyright date (2012)
+
 = 2.0 =
 * Fix bug preventing download of .csv file
 * Fix bug where filters were applied too late (after download handling)
@@ -205,6 +221,9 @@ function change_ce_field_separator( $separator ) {
 
 
 == Upgrade Notice ==
+
+= 2.1 =
+Recommended update: added support for localization; enqueue CSS; updated screenshot; compatibility is now WP 3.1-3.3+.
 
 = 2.0 =
 Recommended update: fixed critical functional bugs; list commenter names alongside email; changed download filename format; added filters; noted compatibility through WP 3.2+; and more.

@@ -1,0 +1,87 @@
+# Translation of the WordPress plugin Commenter Emails v2.1 by Scott Reilly.
+# Copyright (C) 2011 Scott Reilly
+# This file is distributed under the same license as the Commenter Emails plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: Commenter Emails 2.1\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/tag/commenter-emails\n"
+"POT-Creation-Date: 2011-12-21 21:55:17+00:00\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2010-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+
+#. #-#-#-#-#  commenter-emails.pot (Commenter Emails 2.1)  #-#-#-#-#
+#. Plugin Name of the plugin/theme
+#: commenter-emails.php:158 commenter-emails.php:196
+msgid "Commenter Emails"
+msgstr ""
+
+#: commenter-emails.php:179
+msgid "Listing"
+msgstr ""
+
+#: commenter-emails.php:195
+msgid "A plugin by coffee2code"
+msgstr ""
+
+#: commenter-emails.php:197
+msgid ""
+"There are %s unique and approved commenter email addresses for this site."
+msgstr ""
+
+#: commenter-emails.php:202 commenter-emails.php:206
+msgid "Download"
+msgstr ""
+
+#: commenter-emails.php:205
+msgid "Download the email addresses as a CSV file :"
+msgstr ""
+
+#: commenter-emails.php:215
+msgid "All Commenter Emails"
+msgstr ""
+
+#: commenter-emails.php:217
+msgid "Email"
+msgstr ""
+
+#: commenter-emails.php:217
+msgid "Name"
+msgstr ""
+
+#: commenter-emails.php:223
+msgid "%s commenter emails listed."
+msgstr ""
+
+#: commenter-emails.php:228
+msgid ""
+"This plugin brought to you by <a href=\"http://coffee2code.com\" title="
+"\"coffee2code.com\">Scott Reilly, aka coffee2code</a>."
+msgstr ""
+
+#: commenter-emails.php:229
+msgid "Please consider a donation"
+msgstr ""
+
+#: commenter-emails.php:230
+msgid "Did you find this plugin useful?"
+msgstr ""
+
+#. Plugin URI of the plugin/theme
+msgid "http://coffee2code.com/wp-plugins/commenter-emails/"
+msgstr ""
+
+#. Description of the plugin/theme
+msgid "Extract a listing of all commenter emails."
+msgstr ""
+
+#. Author of the plugin/theme
+msgid "Scott Reilly"
+msgstr ""
+
+#. Author URI of the plugin/theme
+msgid "http://coffee2code.com"
+msgstr ""
