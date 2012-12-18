@@ -2,10 +2,12 @@
 Contributors: coffee2code
 Donate link: http://coffee2code.com/donate
 Tags: commenter, commenters, email, address, contact, visitor, comment, coffee2code
+License: GPLv2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.1
-Tested up to: 3.3
-Stable tag: 2.1
-Version: 2.1
+Tested up to: 3.5
+Stable tag: 2.2
+Version: 2.2
 
 Extract a listing of all commenter emails.
 
@@ -17,7 +19,7 @@ Extract a listing of all commenter emails.
 Via the admin page added by the plugin, `Comments -> Commenter Emails`, the admin is presented with the following information:
 
 * A total count of all unique commenters to the blog
-* A button to download the entire list of unique commenters' email addresses in CSV (comma-separated values) format
+* A button to download the entire list of unique commenters' email addresses (and, optionally, their website URL) in CSV (comma-separated values) format
 * The entire list of unique commenters' email addresses and names
 
 The plugin only considers approved comments and does not exclude from its listing any known emails (i.e. admin and post author emails).
@@ -119,10 +121,10 @@ Arguments:
 Example:
 
 `
-// Include the commenter's URL address in the download CSV
+// Include the commenter's IP address in the download CSV
 add_filter( 'c2c_commenter_emails_fields', 'change_ce_fields' );
 function change_ce_fields( $fields ) {
-	$fields[] = 'comment_author_url';
+	$fields[] = 'comment_author_IP';
 	return $fields;
 }
 `
@@ -147,6 +149,18 @@ function change_ce_field_separator( $separator ) {
 
 
 == Changelog ==
+
+= 2.2 =
+* Show comment author URLs in listing
+* Add checkbox to allow inclusion of comment author URLs in CSV
+* Add check to prevent execution of code if file is directly accessed
+* Re-license as GPLv2 or later (from X11)
+* Add 'License' and 'License URI' header tags to readme.txt and plugin file
+* Remove ending PHP close tag
+* Minor documentation tweaks
+* Note compatibility through WP 3.5+
+* Update copyright date (2013)
+* Move screenshot into repo's assets directory
 
 = 2.1 =
 * Add support for localization
@@ -221,6 +235,9 @@ function change_ce_field_separator( $separator ) {
 
 
 == Upgrade Notice ==
+
+= 2.2 =
+Minor feature update: added commenter URLs to listing and optionally to downloaded CSV; noted compatibility through WP 3.5+; explicitly stated license
 
 = 2.1 =
 Recommended update: added support for localization; enqueue CSS; updated screenshot; compatibility is now WP 3.1-3.3+.
