@@ -2,11 +2,11 @@
 /**
  * @package Commenter_Emails
  * @author Scott Reilly
- * @version 2.2
+ * @version 2.2.1
  */
 /*
 Plugin Name: Commenter Emails
-Version: 2.2
+Version: 2.2.1
 Plugin URI: http://coffee2code.com/wp-plugins/commenter-emails/
 Author: Scott Reilly
 Author URI: http://coffee2code.com/
@@ -16,18 +16,19 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Description: Extract a listing of all commenter emails.
 
-Compatible with WordPress 3.1+ through 3.5+.
+Compatible with WordPress 3.1+ through 3.8+.
 
 =>> Read the accompanying readme.txt file for instructions and documentation.
 =>> Also, visit the plugin's homepage for additional information and updates.
-=>> Or visit: http://wordpress.org/extend/plugins/commenter-emails/
+=>> Or visit: http://wordpress.org/plugins/commenter-emails/
 
 TODO:
 	* Handle large number of commenters (page listing?)
+	* Add unit tests
 */
 
 /*
-	Copyright (c) 2007-2013 by Scott Reilly (aka coffee2code)
+	Copyright (c) 2007-2014 by Scott Reilly (aka coffee2code)
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -36,7 +37,7 @@ TODO:
 
 	This program is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 	GNU General Public License for more details.
 
 	You should have received a copy of the GNU General Public License
@@ -61,7 +62,7 @@ class c2c_CommenterEmails {
 	 * @since 2.1
 	 */
 	public static function version() {
-		return '2.2';
+		return '2.2.1';
 	}
 
 	/**
@@ -105,7 +106,7 @@ class c2c_CommenterEmails {
 	 * the most recent comment will be used to obtain any additional field data
 	 * such as comment_author, etc.
 	 *
-	 * @param array $fields
+	 * @param array $fields  The fields to obtain from each comment
 	 * @param string $output (optional) Any of ARRAY_A | ARRAY_N | OBJECT | OBJECT_K constants. See WP docs for wpdb::get_results() for more info
 	 * @return mixed List of email addresses
 	 */
@@ -244,7 +245,7 @@ class c2c_CommenterEmails {
 
 		echo '<div id="c2c-ce" class="wrap"><div>';
 		_e( 'This plugin brought to you by <a href="http://coffee2code.com" title="coffee2code.com">Scott Reilly, aka coffee2code</a>.', 'c2c_ce' );
-		echo '<span><a href="http://coffee2code.com/donate" title="' . esc_attr( __( 'Please consider a donation', 'c2c_ce' ) ) . '">';
+		echo '<span><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ARCFJ9TX3522" title="' . esc_attr( __( 'Please consider a donation', 'c2c_ce' ) ) . '">';
 		_e( 'Did you find this plugin useful?', 'c2c_ce' );
 		echo '</a></span></div></div>';
 	}
