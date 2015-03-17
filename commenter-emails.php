@@ -1,34 +1,34 @@
 <?php
 /**
+ * Plugin Name: Commenter Emails
+ * Version:     2.3
+ * Plugin URI:  http://coffee2code.com/wp-plugins/commenter-emails/
+ * Author:      Scott Reilly
+ * Author URI:  http://coffee2code.com/
+ * Text Domain: commenter-emails
+ * Domain Path: /lang/
+ * License:     GPLv2 or later
+ * License URI: http://www.gnu.org/licenses/gpl-2.0.html
+ * Description: Extract a listing of all commenter emails.
+ *
+ * Compatible with WordPress 3.1+ through 4.1+.
+ *
+ * =>> Read the accompanying readme.txt file for instructions and documentation.
+ * =>> Also, visit the plugin's homepage for additional information and updates.
+ * =>> Or visit: https://wordpress.org/plugins/commenter-emails/
+ *
  * @package Commenter_Emails
- * @author Scott Reilly
- * @version 2.2.1
+ * @author  Scott Reilly
+ * @version 2.3
  */
-/*
-Plugin Name: Commenter Emails
-Version: 2.2.1
-Plugin URI: http://coffee2code.com/wp-plugins/commenter-emails/
-Author: Scott Reilly
-Author URI: http://coffee2code.com/
-Text Domain: commenter-emails
-Domain Path: /lang/
-License: GPLv2 or later
-License URI: http://www.gnu.org/licenses/gpl-2.0.html
-Description: Extract a listing of all commenter emails.
-
-Compatible with WordPress 3.1+ through 3.8+.
-
-=>> Read the accompanying readme.txt file for instructions and documentation.
-=>> Also, visit the plugin's homepage for additional information and updates.
-=>> Or visit: http://wordpress.org/plugins/commenter-emails/
-
-TODO:
-	* Handle large number of commenters (page listing?)
-	* Add unit tests
-*/
 
 /*
-	Copyright (c) 2007-2014 by Scott Reilly (aka coffee2code)
+ * TODO:
+ * - Handle large number of commenters (page listing?)
+ */
+
+/*
+	Copyright (c) 2007-2015 by Scott Reilly (aka coffee2code)
 
 	This program is free software; you can redistribute it and/or
 	modify it under the terms of the GNU General Public License
@@ -47,7 +47,7 @@ TODO:
 
 defined( 'ABSPATH' ) or die();
 
-if ( is_admin() && ! class_exists( 'c2c_CommenterEmails' ) ) :
+if ( ! class_exists( 'c2c_CommenterEmails' ) ) :
 
 class c2c_CommenterEmails {
 	private static $show_csv_button = ''; // Setting to determine if the plugin's admin page should show the CSV button
@@ -62,36 +62,41 @@ class c2c_CommenterEmails {
 	 * @since 2.1
 	 */
 	public static function version() {
-		return '2.2.1';
+		return '2.3';
 	}
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
 	public static function init() {
+		// Only do anything in the admin.
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		self::$plugin_basename = plugin_basename( __FILE__ );
 
-		// Load textdomain
+		// Load textdomain.
 		load_plugin_textdomain( 'c2c_ce', false, basename( dirname( __FILE__ ) ) . DIRECTORY_SEPARATOR . 'lang' );
 
-		// Register hooks
+		// Register hooks.
 		add_action( 'admin_menu', array( __CLASS__, 'admin_menu' ) );
 		add_action( 'admin_menu', array( __CLASS__, 'do_init' ), 11 );
 	}
 
 	/**
-	 * Initialize hooks and data
+	 * Initialize hooks and data.
 	 */
 	public static function do_init() {
 		self::$show_csv_button = apply_filters( 'c2c_commenter_emails_show_csv_button', true );
 		self::$show_emails     = apply_filters( 'c2c_commenter_emails_show_emails',     true );
 		self::$csv_filename    = apply_filters( 'c2c_commenter_emails_filename',        'commenter-emails-' .
-			mysql2date( 'Y-m-d-Hi', current_time( 'mysql' ) ) . '.csv' );
+								 mysql2date( 'Y-m-d-Hi', current_time( 'mysql' ) ) . '.csv' );
 
 		if ( ! empty( self::$plugin_page ) ) {
-			// Handles CSV download
+			// Handles CSV download.
 			add_action( 'load-' . self::$plugin_page, array( __CLASS__, 'handle_csv_download' ) );
-			// Register and enqueue styles for admin page
+			// Register and enqueue styles for admin page.
 			add_action( 'load-' . self::$plugin_page, array( __CLASS__, 'enqueue_admin_css' ) );
 		}
 	}
@@ -106,16 +111,30 @@ class c2c_CommenterEmails {
 	 * the most recent comment will be used to obtain any additional field data
 	 * such as comment_author, etc.
 	 *
-	 * @param array $fields  The fields to obtain from each comment
-	 * @param string $output (optional) Any of ARRAY_A | ARRAY_N | OBJECT | OBJECT_K constants. See WP docs for wpdb::get_results() for more info
-	 * @return mixed List of email addresses
+	 * @param array  $fields  The fields to obtain from each comment.
+	 * @param string $output  Optional. Any of ARRAY_A | ARRAY_N | OBJECT | OBJECT_K constants. See WP docs for wpdb::get_results() for more info.
+	 * @return mixed List of email addresses.
 	 */
 	public static function get_emails( $fields = array( 'comment_author_email', 'comment_author', 'comment_author_url' ), $output = ARRAY_N ) {
 		global $wpdb;
 
-		// comment_author_email must be one of the fields
-		if ( ! in_array( 'comment_author_email', $fields ) )
+		// If $field is explicitly empty, use the default.
+		if ( empty( $fields ) ) {
+			$fields = array( 'comment_author_email', 'comment_author', 'comment_author_url' );
+		}
+
+		// Ensure only valid comment fields are specified.
+		$fields = array_intersect(
+			(array) $fields,
+			array( 'comment_ID', 'comment_post_ID', 'comment_author', 'comment_author_email', 'comment_author_url', 'comment_author_IP',
+					'comment_date', 'comment_date_gmt', 'comment_content', 'comment_karma', 'comment_approved', 'comment_agent',
+					'comment_type', 'comment_parent', 'user_id' )
+		);
+
+		// Ensure comment_author_email is always included.
+		if ( ! in_array( 'comment_author_email', $fields ) ) {
 			array_unshift( $fields,  'comment_author_email' );
+		}
 
 		$fields = implode( ', ', $fields );
 		$sql = "SELECT $fields
@@ -128,13 +147,12 @@ class c2c_CommenterEmails {
 				GROUP BY comment_author_email
 				ORDER BY comment_author_email ASC";
 		$emails = $wpdb->get_results( $sql, $output );
+
 		return $emails;
 	}
 
 	/**
 	 * Handler to download commenter emails directly as CSV file.
-	 *
-	 * @return void (Text is streamed to file to user)
 	 */
 	public static function handle_csv_download() {
 		if ( isset( $_GET['download_csv'] ) && '1' == $_GET['download_csv'] ) {
@@ -145,14 +163,16 @@ class c2c_CommenterEmails {
 			$outstream = fopen( "php://output", 'w' );
 
 			$default_fields = array( 'comment_author', 'comment_author_email' );
-			if ( isset( $_GET['include_url'] ) && '1' == $_GET['include_url'] )
+			if ( isset( $_GET['include_url'] ) && '1' == $_GET['include_url'] ) {
 				$default_fields[] = 'comment_author_url';
+			}
 
 			$fields    = apply_filters( 'c2c_commenter_emails_fields', $default_fields );
 			$field_sep = apply_filters( 'c2c_commenter_emails_field_separator', ',' );
 
-			foreach ( (array) self::get_emails( $fields ) as $item )
+			foreach ( (array) self::get_emails( $fields ) as $item ) {
 				fputcsv( $outstream, $item, $field_sep, '"' );
+			}
 
 			fclose( $outstream );
 
@@ -162,12 +182,12 @@ class c2c_CommenterEmails {
 
 	/**
 	 * Creates the admin menu.
-	 *
-	 * @return void
 	 */
 	public static function admin_menu() {
+		// Add plugin action links.
 		add_filter( 'plugin_action_links_' . self::$plugin_basename, array( __CLASS__, 'plugin_action_links' ) );
-		// Add menu under Comments
+
+		// Add menu item under Comments.
 		self::$plugin_page = add_comments_page( __( 'Commenter Emails', 'c2c_ce' ), __( 'Commenter Emails', 'c2c_ce' ),
 			apply_filters( 'manage_commenter_emails_options', 'manage_options' ), self::$plugin_basename, array( __CLASS__, 'admin_page' ) );
 	}
@@ -185,8 +205,8 @@ class c2c_CommenterEmails {
 	/**
 	 * Adds a 'Settings' link to the plugin action links.
 	 *
-	 * @param array $action_links The current action links
-	 * @return array The action links
+	 * @param array  $action_links The current action links.
+	 * @return array The action links.
 	 */
 	public static function plugin_action_links( $action_links ) {
 		$settings_link = '<a href="edit-comments.php?page=' . self::$plugin_basename.'" title="">' . __( 'Listing', 'c2c_ce' ) . '</a>';
@@ -196,8 +216,6 @@ class c2c_CommenterEmails {
 
 	/**
 	 * Outputs the contents of the plugin's admin page.
-	 *
-	 * @return void
 	 */
 	public static function admin_page() {
 		$emails = self::get_emails();

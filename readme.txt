@@ -5,8 +5,8 @@ Tags: commenter, commenters, email, address, contact, visitor, comment, coffee2c
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 3.1
-Tested up to: 3.8
-Stable tag: 2.2.1
+Tested up to: 4.1
+Stable tag: 2.3
 
 Extract a listing of all commenter emails.
 
@@ -21,7 +21,7 @@ Via the admin page added by the plugin, `Comments -> Commenter Emails`, the admi
 
 The plugin only considers approved comments and does not exclude from its listing any known email addresses (i.e. admin and post author email addresses).
 
-Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/commenter-emails/) | [Plugin Directory Page](http://wordpress.org/plugins/commenter-emails/) | [Author Homepage](http://coffee2code.com)
+Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/commenter-emails/) | [Plugin Directory Page](https://wordpress.org/plugins/commenter-emails/) | [Author Homepage](http://coffee2code.com)
 
 
 == Installation ==
@@ -81,12 +81,17 @@ Arguments:
 Example:
 
 `
-// Change the default filename to embed today's date.
-add_filter( 'c2c_commenter_emails_filename', 'change_ce_filename' );
+/**
+ * Change the default filename to embed today's date for the Commenter Emails plugin.
+ *
+ * @param string $filename The filename for the CSV file.
+ * @return string.
+ */
 function change_ce_filename( $filename ) {
 	$date = date('m-d-Y', strtotime('today')); // Get today's date in m-d-Y format (i.e. 02-25-2010)
 	return "emails-$date.csv";
 }
+add_filter( 'c2c_commenter_emails_filename', 'change_ce_filename' );
 `
 
 = manage_commenter_emails_options (filter) =
@@ -100,11 +105,16 @@ Arguments:
 Example:
 
 `
-// Change the capability needed to see the Commenter Emails admin page
-add_filter( 'manage_commenter_emails_options', 'change_ce_cap' );
+/**
+ * Change the capability needed to see the Commenter Emails admin page for the Commenter Emails plugin.
+ *
+ * @param string $capability The necessary capability.
+ * @return string
+ */
 function change_ce_cap( $capability ) {
 	return 'manage_commenter_emails';
 }
+add_filter( 'manage_commenter_emails_options', 'change_ce_cap' );
 `
 
 = c2c_commenter_emails_fields (filter) =
@@ -118,12 +128,17 @@ Arguments:
 Example:
 
 `
-// Include the commenter's IP address in the download CSV
-add_filter( 'c2c_commenter_emails_fields', 'change_ce_fields' );
+/**
+ * Include the commenter's IP address in the download CSV for the Commenter Emails plugin.
+ *
+ * @param array $fields The comment email fields to include in the CSV output.
+ * @return array
+ */
 function change_ce_fields( $fields ) {
 	$fields[] = 'comment_author_IP';
 	return $fields;
 }
+add_filter( 'c2c_commenter_emails_fields', 'change_ce_fields' );
 `
 
 = c2c_commenter_emails_field_separator (filter) =
@@ -137,15 +152,32 @@ Arguments:
 Example:
 
 `
-// Change the data fields separator to '|'
-add_filter( 'c2c_commenter_emails_field_separator', 'change_ce_field_separator' );
+/**
+ * Change the data fields separator to '|' for Commenter Emails plugin.
+ *
+ * @param string $separator The defautl separator.
+ * @return string
+ */
 function change_ce_field_separator( $separator ) {
 	return '|';
 }
+add_filter( 'c2c_commenter_emails_field_separator', 'change_ce_field_separator' );
 `
 
 
 == Changelog ==
+
+= 2.3 (2015-03-17) =
+* Ensure only valid comment fields can be specified as first argument to `get_emails()`
+* Use the default argument value of 'fields' argument if it is explicitly set as empty
+* Remove `is_admin()` check preventing class from being defined (to facilitate unit testing and general use by other code)
+* Add unit tests
+* Minor code reformatting (spacing, bracing)
+* Note compatibility through WP 4.1+
+* Change documentation links to w.org to be https
+* Update copyright date (2015)
+* Add plugin icon
+* Regenerate .pot
 
 = 2.2.1 (2013-12-30) =
 * Note compatibility through WP 3.8+
@@ -240,6 +272,9 @@ function change_ce_field_separator( $separator ) {
 
 
 == Upgrade Notice ==
+
+= 2.3 =
+Recommended update: code hardening; added unit tests; noted compatibility with WP 4.1+; added plugin icon
 
 = 2.2.1 =
 Trivial update: noted compatibility with WP 3.8+
