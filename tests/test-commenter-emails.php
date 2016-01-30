@@ -1,28 +1,30 @@
 <?php
 
+defined( 'ABSPATH' ) or die();
+
 class Commenter_Emails_Test extends WP_UnitTestCase {
 
-	function setUp() {
+	public function setUp() {
 		parent::setUp();
 	}
 
-	function tearDown() {
+	public function tearDown() {
 		parent::tearDown();
 	}
 
 
-	/*
-	 *
-	 * DATA PROVIDERS
-	 *
-	 */
+	//
+	//
+	// DATA PROVIDERS
+	//
+	//
 
 
-	/*
-	 *
-	 * HELPER FUNCTIONS
-	 *
-	 */
+	//
+	//
+	// HELPER FUNCTIONS
+	//
+	//
 
 
 	private function create_users( $number = 5 ) {
@@ -52,26 +54,25 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	}
 
 
-	/*
-	 *
-	 * TESTS
-	 *
-	 */
+	//
+	//
+	// TESTS
+	//
+	//
 
-
-	function test_class_exists() {
+	public function test_class_exists() {
 		$this->assertTrue( class_exists( 'c2c_CommenterEmails' ) );
 	}
 
-	function test_version() {
-		$this->assertEquals( '2.3', c2c_CommenterEmails::version() );
+	public function test_version() {
+		$this->assertEquals( '2.4', c2c_CommenterEmails::version() );
 	}
 
-	/*
-	 * get_emails()
-	 */
+	//
+	// get_emails()
+	//
 
-	function test_get_emails_default( $comment_ids = array() ) {
+	public function test_get_emails_default( $comment_ids = array() ) {
 		// Allow other tests to reuse this test without this recreating comments.
 		if ( empty( $comment_ids ) ) {
 			$comment_ids = $this->create_comments();
@@ -89,7 +90,7 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		);
 	}
 
-	function test_get_emails_with_empty_fields() {
+	public function test_get_emails_with_empty_fields() {
 		$comment_ids = $this->create_comments();
 
 		$emails = array();
@@ -104,7 +105,46 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		);
 	}
 
-	function test_get_emails_with_object_return_type() {
+	public function test_get_emails_for_specified_posts() {
+		$comment_ids = $this->create_comments();
+
+		$main_comment = get_comment( $comment_ids[1] );
+
+		$emails = array();
+		foreach ( $comment_ids as $comment_id ) {
+			$comment = get_comment( $comment_id );
+			if ( $comment->comment_post_ID !== $main_comment->comment_post_ID ) {
+				continue;
+			}
+			$emails[] = array( $comment->comment_author_email, $comment->comment_author, $comment->comment_author_url );
+		}
+
+		$this->assertEquals(
+			$emails,
+			c2c_CommenterEmails::get_emails( array(), array( $main_comment->comment_post_ID ) )
+		);
+	}
+
+	public function test_get_emails_with_object_return_type() {
+		$comment_ids = $this->create_comments();
+
+		$emails = array();
+		foreach ( $comment_ids as $comment_id ) {
+			$comment = get_comment( $comment_id );
+			$emails[] = (object) array(
+				'comment_author_email' => $comment->comment_author_email,
+				'comment_author'       => $comment->comment_author,
+				'comment_author_url'   => $comment->comment_author_url
+			);
+		}
+
+		$this->assertEquals(
+			$emails,
+			c2c_CommenterEmails::get_emails( array(), array(), OBJECT )
+		);
+	}
+
+	public function test_get_emails_with_object_return_type_via_depracated_arg() {
 		$comment_ids = $this->create_comments();
 
 		$emails = array();
@@ -123,7 +163,7 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		);
 	}
 
-	function test_get_emails_with_specific_fields() {
+	public function test_get_emails_with_specific_fields() {
 		$comment_ids = $this->create_comments();
 		$emails = array();
 		foreach ( $comment_ids as $comment_id ) {
@@ -137,7 +177,7 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		);
 	}
 
-	function test_get_emails_with_invalid_field_ignores_that_field() {
+	public function test_get_emails_with_invalid_field_ignores_that_field() {
 		$comment_ids = $this->create_comments();
 		$emails = array();
 		foreach ( $comment_ids as $comment_id ) {
@@ -151,7 +191,7 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		);
 	}
 
-	function test_get_emails_omitting_comment_author_email_still_includes_it() {
+	public function test_get_emails_omitting_comment_author_email_still_includes_it() {
 		$comment_ids = $this->create_comments();
 		$emails = array();
 		foreach ( $comment_ids as $comment_id ) {
@@ -165,7 +205,34 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		);
 	}
 
-	function test_get_emails_repeat_commenter_only_listed_once() {
+	public function test_get_emails_with_all_the_args() {
+		$comment_ids = $this->create_comments();
+
+		$main_comment = get_comment( $comment_ids[1] );
+
+		$emails = array();
+		foreach ( $comment_ids as $comment_id ) {
+			$comment = get_comment( $comment_id );
+			if ( $comment->comment_post_ID !== $main_comment->comment_post_ID ) {
+				continue;
+			}
+			$emails[] = (object) array(
+				'comment_author_email' => $comment->comment_author_email,
+				'comment_author_url'   => $comment->comment_author_url
+			);
+		}
+
+		$this->assertEquals(
+			$emails,
+			c2c_CommenterEmails::get_emails(
+				array( 'comment_author_email', 'comment_author_url' ),
+				array( $main_comment->comment_post_ID ),
+				OBJECT
+			)
+		);
+	}
+
+	public function test_get_emails_repeat_commenter_only_listed_once() {
 		$email = 'commenter@example.com';
 		$comment_ids = $this->create_comments( 3, 3, array(), array( 'comment_author_email' => $email ) );
 
@@ -175,7 +242,7 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		);
 	}
 
-	function test_get_emails_ignores_unapproved_comments() {
+	public function test_get_emails_ignores_unapproved_comments() {
 		$comment_ids = $this->create_comments();
 
 		wp_delete_comment( $comment_ids[0] );
@@ -185,32 +252,34 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		$this->test_get_emails_default( array_slice( $comment_ids, 3 ) );
 	}
 
-	/*
-	 * Admin area tests. All tests beyond this point assume the admin area.
-	 */
+	//
+	// Admin area tests. All tests beyond this point assume the admin area.
+	//
 
-	function test_admin_stuff() {
-		define( 'WP_ADMIN', true );
+	public function test_admin_stuff() {
+		if ( ! defined( 'WP_ADMIN' ) ) {
+			define( 'WP_ADMIN', true );
+		}
 		c2c_CommenterEmails::init();
 
 		$this->assertTrue( is_admin() );
 	}
 
 
-	/*
-	 * Filters
-	 */
+	//
+	// Filters
+	//
 
-	function test_hooks_action_admin_menu_for_admin_menu() {
+	public function test_hooks_action_plugins_loaded_for_do_init() {
 		$this->test_admin_stuff();
 
-		$this->assertEquals( 10, has_action( 'admin_menu', array( 'c2c_CommenterEmails', 'admin_menu' ) ) );
+		$this->assertEquals( 10, has_action( 'plugins_loaded', array( 'c2c_CommenterEmails', 'do_init' ) ) );
 	}
 
-	function test_hooks_action_admin_menu_for_do_init() {
+	public function test_hooks_action_admin_menu_for_admin_menu() {
 		$this->test_admin_stuff();
 
-		$this->assertEquals( 11, has_action( 'admin_menu', array( 'c2c_CommenterEmails', 'do_init' ) ) );
+		$this->assertEquals( 11, has_action( 'admin_menu', array( 'c2c_CommenterEmails', 'admin_menu' ) ) );
 	}
 
 	// TEST: default csv filename is used

@@ -1,3 +1,9 @@
+.commenter-emails-table td {
+	padding-left: 26px;
+}
+.commenter-emails-table tr td:first-child {
+	padding-left: 0;
+}
 #c2c-ce {
 	text-align:center;
 	color:#888;
