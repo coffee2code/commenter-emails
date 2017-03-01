@@ -8,7 +8,7 @@
  * Text Domain: commenter-emails
  * License:     GPLv2 or later
  * License URI: http://www.gnu.org/licenses/gpl-2.0.html
- * Description: Extract a listing of all commenter emails.
+ * Description: Extract a listing of data for all commenters (email addresses, names, URLs), and an option to export that data as a CSV file.
  *
  * Compatible with WordPress 4.1+ through 4.7+.
  *

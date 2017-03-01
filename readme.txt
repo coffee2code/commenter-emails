@@ -8,7 +8,7 @@ Requires at least: 4.1
 Tested up to: 4.7
 Stable tag: 2.4
 
-Extract a listing of all commenter emails.
+Extract a listing of data for all commenters (email addresses, names, URLs), and an option to export that data as a CSV file.
 
 
 == Description ==
@@ -168,11 +168,12 @@ add_filter( 'c2c_commenter_emails_field_separator', 'change_ce_field_separator' 
 
 == Changelog ==
 
-= () =
+= 2.4.1 (2017-02-28) =
 * Change: Update unit test bootstrap
     * Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable
     * Enable more error output for unit tests
 * Change: Note compatibility through WP 4.7+
+* Change: Change description
 * Change: Update copyright date (2017)
 
 = 2.4 (2016-01-29) =
