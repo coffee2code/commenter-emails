@@ -176,6 +176,7 @@ add_filter( 'c2c_commenter_emails_field_separator', 'change_ce_field_separator' 
 * Change: Change description
 * Change: Minor readme.txt content and formatting tweaks
 * Change: Update copyright date (2017)
+* New: Add LICENSE file
 
 = 2.4 (2016-01-29) =
 Highlights:
