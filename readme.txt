@@ -168,6 +168,10 @@ add_filter( 'c2c_commenter_emails_field_separator', 'change_ce_field_separator' 
 
 == Changelog ==
 
+= () =
+* Change: Update unit test bootstrap
+    * Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable
+
 = 2.4 (2016-01-29) =
 Highlights:
 * This release introduces the ability to limit listing commenter information for specific posts, as well as many minor behind-the-scenes changes.
