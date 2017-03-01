@@ -5,7 +5,7 @@ Tags: commenter, commenters, email, address, contact, visitor, comment, coffee2c
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.1
-Tested up to: 4.4
+Tested up to: 4.7
 Stable tag: 2.4
 
 Extract a listing of all commenter emails.
@@ -172,6 +172,7 @@ add_filter( 'c2c_commenter_emails_field_separator', 'change_ce_field_separator' 
 * Change: Update unit test bootstrap
     * Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable
     * Enable more error output for unit tests
+* Change: Note compatibility through WP 4.7+
 * Change: Update copyright date (2017)
 
 = 2.4 (2016-01-29) =
