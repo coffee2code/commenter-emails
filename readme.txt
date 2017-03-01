@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.1
 Tested up to: 4.7
-Stable tag: 2.4
+Stable tag: 2.4.1
 
 Extract a listing of data for all commenters (email addresses, names, URLs), and an option to export that data as a CSV file.
 
@@ -312,6 +312,9 @@ Details:
 
 
 == Upgrade Notice ==
+
+= 2.4.1 =
+Trivial update: noted compatibility through WP 4.7+, updated copyright date (2017), minor unit test adjustments
 
 = 2.4 =
 Feature update: added ability to list commenter info for only select posts; improved support for localization; verified compatibility through WP 4.4; removed compatibility with WP earlier than 4.1; updated copyright date (2016)

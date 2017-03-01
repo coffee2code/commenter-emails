@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Commenter Emails
- * Version:     2.4
+ * Version:     2.4.1
  * Plugin URI:  http://coffee2code.com/wp-plugins/commenter-emails/
  * Author:      Scott Reilly
  * Author URI:  http://coffee2code.com/
@@ -18,12 +18,13 @@
  *
  * @package Commenter_Emails
  * @author  Scott Reilly
- * @version 2.4
+ * @version 2.4.1
  */
 
 /*
  * TODO:
  * - Handle large number of commenters (page listing?)
+ * - Move settings page export setting from Help panel to Screen Options panel
  */
 
 /*
@@ -95,7 +96,7 @@ class c2c_CommenterEmails {
 	 * @since 2.1
 	 */
 	public static function version() {
-		return '2.4';
+		return '2.4.1';
 	}
 
 	/**
