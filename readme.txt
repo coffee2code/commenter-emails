@@ -13,10 +13,10 @@ Extract a listing of data for all commenters (email addresses, names, URLs), and
 
 == Description ==
 
-Via the admin page added by the plugin, `Comments -> Commenter Emails`, the admin is presented with the following information:
+Via the admin page added by the plugin, `Comments -> Commenter Emails`, admin users are presented with the following information:
 
-* A total count of all unique commenters to the blog
-* The entire list of unique commenters' email addresses, names, and provided website URLs
+* A total count of all unique commenters to the site
+* The entire list of each unique commenters' email addresses, names, and provided website URLs
 * A button to download the entire list of unique commenters' email addresses (and, optionally, their website URL) in CSV (comma-separated values) format
 
 The plugin only considers approved comments and does not exclude from its listing any known email addresses (i.e. admin and post author email addresses).
@@ -26,9 +26,9 @@ Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/commenter-emails/) | 
 
 == Installation ==
 
-1. Unzip `commenter-emails.zip` inside the `/wp-content/plugins/` directory (or install via the built-in WordPress plugin installer)
-1. Activate the plugin through the 'Plugins' admin menu in WordPress
-1. View the commenter email information reported in the WordPress admin via `Comments -> Commenter Emails`
+1. Install via the built-in WordPress plugin installer. Or download and unzip `commenter-emails.zip` inside the plugins directory for your site (typically `wp-content/plugins/`)
+2. Activate the plugin through the 'Plugins' admin menu in WordPress
+3. View the commenter email information reported in the WordPress admin via `Comments -> Commenter Emails`
 
 
 == Screenshots ==
@@ -39,7 +39,7 @@ Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/commenter-emails/) | 
 
 == Filters ==
 
-The plugin exposes six filters for hooking. Typically, customizations utilizing these hooks would be put into your active theme's functions.php file, or used by another plugin.
+The plugin exposes six filters for hooking. Code using these filters should ideally be put into a mu-plugin or site-specific plugin (which is beyond the scope of this readme to explain). Less ideally, you could put them in your active theme's functions.php file.
 
 = c2c_commenter_emails_show_csv_button (filter) =
 
@@ -174,6 +174,7 @@ add_filter( 'c2c_commenter_emails_field_separator', 'change_ce_field_separator' 
     * Enable more error output for unit tests
 * Change: Note compatibility through WP 4.7+
 * Change: Change description
+* Change: Minor readme.txt content and formatting tweaks
 * Change: Update copyright date (2017)
 
 = 2.4 (2016-01-29) =
