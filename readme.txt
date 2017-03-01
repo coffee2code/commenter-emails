@@ -172,6 +172,7 @@ add_filter( 'c2c_commenter_emails_field_separator', 'change_ce_field_separator' 
 * Change: Update unit test bootstrap
     * Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable
     * Enable more error output for unit tests
+* Change: Update copyright date (2017)
 
 = 2.4 (2016-01-29) =
 Highlights:
