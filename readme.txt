@@ -37,7 +37,7 @@ Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/commenter-emails/) | 
 2. A screenshot of the plugin's settings page with the "Help" tab expanded to reveal input for limited the listing of commenters to those who commented on specified posts.
 
 
-== Filters ==
+== Hooks ==
 
 The plugin exposes six filters for hooking. Code using these filters should ideally be put into a mu-plugin or site-specific plugin (which is beyond the scope of this readme to explain). Less ideally, you could put them in your active theme's functions.php file.
 
