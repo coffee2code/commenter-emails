@@ -41,7 +41,7 @@ Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/commenter-emails/) | 
 
 The plugin exposes six filters for hooking. Code using these filters should ideally be put into a mu-plugin or site-specific plugin (which is beyond the scope of this readme to explain). Less ideally, you could put them in your active theme's functions.php file.
 
-= c2c_commenter_emails_show_csv_button (filter) =
+**c2c_commenter_emails_show_csv_button (filter)**
 
 The 'c2c_commenter_emails_show_csv_button' hook allows you to customize whether the button to download a CSV file of the commenter emails list should be present on the plugin's admin settings page. By default this is true.
 
@@ -56,7 +56,7 @@ Example:
 add_filter( 'c2c_commenter_emails_show_csv_button', '__return_false' );
 `
 
-= c2c_commenter_emails_show_emails (filter) =
+**c2c_commenter_emails_show_emails (filter)**
 
 The 'c2c_commenter_emails_show_emails' hook allows you to customize whether the listing of emails should appear on the plugin's admin settings page. By default this is true.
 
@@ -71,7 +71,7 @@ Example:
 add_filter( 'c2c_commenter_emails_show_emails', '__return_false' );
 `
 
-= c2c_commenter_emails_filename (filter) =
+**c2c_commenter_emails_filename (filter)**
 
 The 'c2c_commenter_emails_filename' hook allows you to customize the name used for the .csv file when being downloaded. By default this is 'commenter-emails.csv'.
 
@@ -95,7 +95,7 @@ function change_ce_filename( $filename ) {
 add_filter( 'c2c_commenter_emails_filename', 'change_ce_filename' );
 `
 
-= manage_commenter_emails_options (filter) =
+**manage_commenter_emails_options (filter)**
 
 The 'manage_commenter_emails_options' hook allows you to customize the capability required to access the commenter emails admin page. You should be certain that you've created the capability and assigned that capability to the desired user(s). By default this is the 'manage_options' capability.
 
@@ -118,7 +118,7 @@ function change_ce_cap( $capability ) {
 add_filter( 'manage_commenter_emails_options', 'change_ce_cap' );
 `
 
-= c2c_commenter_emails_fields (filter) =
+**c2c_commenter_emails_fields (filter)**
 
 The 'c2c_commenter_emails_fields' hook allows you to customize the user fields included in the download CSV file. By default the CSV file includes comment_author and comment_author_email.
 
@@ -142,7 +142,7 @@ function change_ce_fields( $fields ) {
 add_filter( 'c2c_commenter_emails_fields', 'change_ce_fields' );
 `
 
-= c2c_commenter_emails_field_separator (filter) =
+**c2c_commenter_emails_field_separator (filter)**
 
 The 'c2c_commenter_emails_field_separator' hook allows you to customize the separator used in the CSV file.
 
