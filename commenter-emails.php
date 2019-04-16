@@ -14,7 +14,7 @@
  *
  * =>> Read the accompanying readme.txt file for instructions and documentation.
  * =>> Also, visit the plugin's homepage for additional information and updates.
- * =>> Or visit: http://wordpress.org/plugins/commenter-emails/
+ * =>> Or visit: https://wordpress.org/plugins/commenter-emails/
  *
  * @package Commenter_Emails
  * @author  Scott Reilly
