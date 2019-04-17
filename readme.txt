@@ -21,7 +21,7 @@ Via the admin page added by the plugin, `Comments -> Commenter Emails`, admin us
 
 The plugin only considers approved comments and does not exclude from its listing any known email addresses (i.e. admin and post author email addresses).
 
-Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/commenter-emails/) | [Plugin Directory Page](https://wordpress.org/plugins/commenter-emails/) | [Author Homepage](http://coffee2code.com)
+Links: [Plugin Homepage](http://coffee2code.com/wp-plugins/commenter-emails/) | [Plugin Directory Page](https://wordpress.org/plugins/commenter-emails/) | [GitHub](https://github.com/coffee2code/commenter-emails/) | [Author Homepage](http://coffee2code.com)
 
 
 == Installation ==
