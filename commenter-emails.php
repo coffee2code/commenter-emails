@@ -91,6 +91,20 @@ class c2c_CommenterEmails {
 	private static $plugin_page     = '';
 
 	/**
+	 * Prevent instantiation.
+	 *
+	 * @since 2.5
+	 */
+	private function __construct() {}
+
+	/**
+	 * Prevent unserializing an instance.
+	 *
+	 * @since 2.5
+	 */
+	private function __wakeup() {}
+
+	/**
 	 * Returns version of the plugin.
 	 *
 	 * @since 2.1
