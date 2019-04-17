@@ -3,6 +3,7 @@
 ## _(in-progress)_
 * New: Add README.md file
 * New: Add CHANGELOG.md file and move all but most recent changelog entries into it
+* Change: Unit tests: Minor whitespace tweaks to bootstrap
 * Change: Note compatibility through WP 5.1+
 * Change: Rename readme.txt section from 'Filters' to 'Hooks'
 * Change: Modify formatting of hook name in readme to prevent being uppercased when shown in the Plugin Directory
