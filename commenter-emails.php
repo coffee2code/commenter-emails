@@ -276,7 +276,7 @@ class c2c_CommenterEmails {
 	 * @return array The action links.
 	 */
 	public static function plugin_action_links( $action_links ) {
-		$settings_link = '<a href="edit-comments.php?page=' . self::$plugin_basename.'">' . __( 'Listing', 'commenter-emails' ) . '</a>';
+		$settings_link = '<a href="edit-comments.php?page=' . urlencode( self::$plugin_basename ) . '">' . __( 'Listing', 'commenter-emails' ) . '</a>';
 		array_unshift( $action_links, $settings_link );
 		return $action_links;
 	}
