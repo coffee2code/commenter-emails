@@ -368,7 +368,7 @@ class c2c_CommenterEmails {
 					}
 				}
 			} elseif ( ! $emails_count ) {
-				printf( __( 'There were no commenters found to list.' ) );
+				printf( __( 'There were no commenters found to list.', 'commenter-emails' ) );
 			} else {
 				printf( __( '%s commenter emails listed.', 'commenter-emails' ), $emails_count );
 			}

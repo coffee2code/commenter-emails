@@ -9,6 +9,7 @@
 * Change: Prevent object instantiation
     * Add private `__construct()`
     * Add private `__wakeup()`
+* Change: Add missing translation textdomain
 * Change: Unit tests: Minor whitespace tweaks to bootstrap
 * Change: Note compatibility through WP 5.1+
 * Change: Rename readme.txt section from 'Filters' to 'Hooks'
