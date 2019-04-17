@@ -447,6 +447,6 @@ class c2c_CommenterEmails {
 	}
 } // end c2c_CommenterEmails
 
-c2c_CommenterEmails::init();
+add_action( 'plugins_loaded', array( 'c2c_CommenterEmails', 'init' ) );
 
 endif; // end if ! class_exists()

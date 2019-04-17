@@ -273,7 +273,7 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	public function test_hooks_action_plugins_loaded_for_do_init() {
 		$this->test_admin_stuff();
 
-		$this->assertEquals( 10, has_action( 'plugins_loaded', array( 'c2c_CommenterEmails', 'do_init' ) ) );
+		$this->assertEquals( 10, has_action( 'plugins_loaded', array( 'c2c_CommenterEmails', 'init' ) ) );
 	}
 
 	public function test_hooks_action_admin_menu_for_admin_menu() {
