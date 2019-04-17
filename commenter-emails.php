@@ -117,15 +117,6 @@ class c2c_CommenterEmails {
 	 * Constructor.
 	 */
 	public static function init() {
-		add_action( 'plugins_loaded', array( __CLASS__, 'do_init' ) );
-	}
-
-	/**
-	 * Initializes plugin.
-	 *
-	 * @since 2.4
-	 */
-	public static function do_init() {
 		self::$plugin_basename = plugin_basename( __FILE__ );
 
 		// Load textdomain.
