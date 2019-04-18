@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.1
 Tested up to: 5.1
-Stable tag: 2.4.1
+Stable tag: 2.5
 
 Extract a listing of data for all commenters (email addresses, names, URLs), and an option to export that data as a CSV file.
 
@@ -168,6 +168,26 @@ add_filter( 'c2c_commenter_emails_field_separator', 'change_ce_field_separator' 
 
 == Changelog ==
 
+= 2.5 (2019-04-17) =
+* New: Add README.md file
+* New: Add CHANGELOG.md file and move all but most recent changelog entries into it
+* New: Add inline documentation for hooks
+* New: Add GitHub link to readme.txt
+* Change: Initialize plugin on 'plugins_loaded' action instead of on load
+* Change: Merge `do_init()` into `init()`
+* Change: Prevent object instantiation
+    * Add private `__construct()`
+    * Add private `__wakeup()`
+* Change: Cast return values for a number of hooks to boolean or array
+* Change: (Hardening) Encode plugin basename before use as part of a URL
+* Change: Add missing translation textdomain
+* Change: Unit tests: Minor whitespace tweaks to bootstrap
+* Change: Note compatibility through WP 5.1+
+* Change: Rename readme.txt section from 'Filters' to 'Hooks'
+* Change: Modify formatting of hook name in readme to prevent being uppercased when shown in the Plugin Directory
+* Change: Update copyright date (2019)
+* Change: Update License URI to be HTTPS
+
 = 2.4.1 (2017-02-28) =
 * Change: Update unit test bootstrap
     * Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable
@@ -211,6 +231,9 @@ _Full changelog is available in [CHANGELOG.md](https://github.com/coffee2code/co
 
 
 == Upgrade Notice ==
+
+= 2.5 =
+Minor update: tweaked plugin initialization, noted compatibility through WP 5.1+, created CHANGELOG.md to store historical changelog outside of readme.txt, and updated copyright date (2019)
 
 = 2.4.1 =
 Trivial update: noted compatibility through WP 4.7+, updated copyright date (2017), minor unit test adjustments

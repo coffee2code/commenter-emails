@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: Commenter Emails
- * Version:     2.4.1
+ * Version:     2.5
  * Plugin URI:  http://coffee2code.com/wp-plugins/commenter-emails/
  * Author:      Scott Reilly
  * Author URI:  http://coffee2code.com/
@@ -18,7 +18,7 @@
  *
  * @package Commenter_Emails
  * @author  Scott Reilly
- * @version 2.4.1
+ * @version 2.5
  */
 
 /*
@@ -110,7 +110,7 @@ class c2c_CommenterEmails {
 	 * @since 2.1
 	 */
 	public static function version() {
-		return '2.4.1';
+		return '2.5';
 	}
 
 	/**
