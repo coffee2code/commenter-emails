@@ -1,6 +1,6 @@
 # Commenter Emails
 
-A plugin for WordPress that allows for the extraction of a listing of data for all commenters (email addresses, names, URLs), and an option to export that data as a CSV file..
+A plugin for WordPress that allows for the extraction of a listing of data for all commenters (email addresses, names, URLs), and an option to export that data as a CSV file.
 
 This plugin is available in the WordPress Plugin Directory: https://wordpress.org/plugins/commenter-emails/
 
