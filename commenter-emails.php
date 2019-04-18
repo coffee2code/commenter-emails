@@ -132,8 +132,33 @@ class c2c_CommenterEmails {
 	public static function admin_menu() {
 		self::register_admin_menu();
 
+		/**
+		 * Filters whether the button to download a CSV file of the commenter emails
+		 * list should be present on the plugin's admin settings page.
+		 *
+		 * @since 1.2
+		 *
+		 * @param bool $show_csv_button Show the CSV button? Default true.
+		 */
 		self::$show_csv_button = apply_filters( 'c2c_commenter_emails_show_csv_button', true );
+
+		/**
+		 * Filters whether the listing of email addresses should appear on the
+		 * plugin's admin settings page
+		 *
+		 * @since 1.2
+		 *
+		 * @param bool $show_emails Show the listing of email addresses? Default true.
+		 */
 		self::$show_emails     = apply_filters( 'c2c_commenter_emails_show_emails',     true );
+
+		/**
+		 * Filters the name used for the .csv file when being downloaded.
+		 *
+		 * @since 1.2
+		 *
+		 * @param string $filename The filename. Default 'commenter-emails-YYYY-MM-DD-H:S.csv'.
+		 */
 		self::$csv_filename    = apply_filters( 'c2c_commenter_emails_filename',        'commenter-emails-' .
 								 mysql2date( 'Y-m-d-Hi', current_time( 'mysql' ) ) . '.csv' );
 
@@ -234,7 +259,26 @@ class c2c_CommenterEmails {
 				$default_fields[] = 'comment_author_url';
 			}
 
+			/**
+			 * Filters the user fields included in the download CSV file.
+			 *
+			 * @since 2.0
+			 *
+			 * @param array $fields The user fields. Whether explicitly included or not,
+			 *                      'comment_author_email' will always be output in the
+			 *                      CSV. Default ['comment_author', 'comment_author_email'].
+			 */
 			$fields    = apply_filters( 'c2c_commenter_emails_fields', $default_fields );
+
+			/**
+			 * Filters the user fields included in the download CSV file. By default the
+			 * CSV file includes comment_author and comment_author_email.
+			 *
+			 * @since 2.0
+			 *
+			 * @param string $separator String to be used as the data separator in the
+			 *                          CSV file. Default is ','.
+			 */
 			$field_sep = apply_filters( 'c2c_commenter_emails_field_separator', ',' );
 
 			foreach ( (array) self::get_emails( $fields, self::get_post_ids() ) as $item ) {
@@ -254,9 +298,20 @@ class c2c_CommenterEmails {
 		// Add plugin action links.
 		add_filter( 'plugin_action_links_' . self::$plugin_basename, array( __CLASS__, 'plugin_action_links' ) );
 
+		/**
+		 * Filters the capability required to access the commenter emails admin page.
+		 *
+		 * Ensure capability is created and assigned to the desired user(s)
+		 *
+		 * @since 1.1.1
+		 *
+		 * @param string $capability The capability name. Default 'manage_options'.
+		 */
+		$capability = apply_filters( 'manage_commenter_emails_options', 'manage_options' );
+
 		// Add menu item under Comments.
 		self::$plugin_page = add_comments_page( __( 'Commenter Emails', 'commenter-emails' ), __( 'Commenter Emails', 'commenter-emails' ),
-			apply_filters( 'manage_commenter_emails_options', 'manage_options' ), self::$plugin_basename, array( __CLASS__, 'admin_page' ) );
+			$capability, self::$plugin_basename, array( __CLASS__, 'admin_page' ) );
 	}
 
 	/**

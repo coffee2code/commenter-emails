@@ -3,6 +3,7 @@
 ## _(in-progress)_
 * New: Add README.md file
 * New: Add CHANGELOG.md file and move all but most recent changelog entries into it
+* New: Add inline documentation for hooks
 * New: Add GitHub link to readme.txt
 * Change: Initialize plugin on 'plugins_loaded' action instead of on load
 * Change: Merge `do_init()` into `init()`
