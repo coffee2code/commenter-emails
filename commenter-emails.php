@@ -140,7 +140,7 @@ class c2c_CommenterEmails {
 		 *
 		 * @param bool $show_csv_button Show the CSV button? Default true.
 		 */
-		self::$show_csv_button = apply_filters( 'c2c_commenter_emails_show_csv_button', true );
+		self::$show_csv_button = (bool) apply_filters( 'c2c_commenter_emails_show_csv_button', true );
 
 		/**
 		 * Filters whether the listing of email addresses should appear on the
@@ -150,7 +150,7 @@ class c2c_CommenterEmails {
 		 *
 		 * @param bool $show_emails Show the listing of email addresses? Default true.
 		 */
-		self::$show_emails     = apply_filters( 'c2c_commenter_emails_show_emails',     true );
+		self::$show_emails     = (bool) apply_filters( 'c2c_commenter_emails_show_emails',     true );
 
 		/**
 		 * Filters the name used for the .csv file when being downloaded.
@@ -268,7 +268,7 @@ class c2c_CommenterEmails {
 			 *                      'comment_author_email' will always be output in the
 			 *                      CSV. Default ['comment_author', 'comment_author_email'].
 			 */
-			$fields    = apply_filters( 'c2c_commenter_emails_fields', $default_fields );
+			$fields    = (array) apply_filters( 'c2c_commenter_emails_fields', $default_fields );
 
 			/**
 			 * Filters the user fields included in the download CSV file. By default the

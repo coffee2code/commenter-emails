@@ -10,6 +10,7 @@
 * Change: Prevent object instantiation
     * Add private `__construct()`
     * Add private `__wakeup()`
+* Change: Cast return values for a number of hooks to boolean or array
 * Change: (Hardening) Encode plugin basename before use as part of a URL
 * Change: Add missing translation textdomain
 * Change: Unit tests: Minor whitespace tweaks to bootstrap
