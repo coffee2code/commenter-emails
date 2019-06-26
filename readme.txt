@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.1
 Tested up to: 5.2
-Stable tag: 2.5
+Stable tag: 2.5.1
 
 Extract a listing of data for all commenters (email addresses, names, URLs), and an option to export that data as a CSV file.
 
@@ -168,6 +168,10 @@ add_filter( 'c2c_commenter_emails_field_separator', 'change_ce_field_separator' 
 
 == Changelog ==
 
+= 2.5.1 (2019-06-25) =
+* Change: Update unit test install script and bootstrap to use latest WP unit test repo
+* Change: Note compatibility through WP 5.2+
+
 = 2.5 (2019-04-17) =
 * New: Add README.md file
 * New: Add CHANGELOG.md file and move all but most recent changelog entries into it
@@ -198,39 +202,13 @@ add_filter( 'c2c_commenter_emails_field_separator', 'change_ce_field_separator' 
 * Change: Update copyright date (2017)
 * New: Add LICENSE file
 
-= 2.4 (2016-01-29) =
-Highlights:
-* This release introduces the ability to limit listing commenter information for specific posts, as well as many minor behind-the-scenes changes.
-
-Details:
-* Feature: Add ability to list commenter emails for selected posts.
-    * Add 'Help' panel to setting page with input field for comma-separated post IDs.
-    * Add 'post_ids' arg to `get_emails()`.
-    * Handle addition of 'post_ids' arg before existing 'output'.
-* Change: Add support for language packs:
-    * Change textdomain from 'c2c_ce' to 'commenter-emails'.
-    * Don't load plugin translations from file.
-    * Remove .pot file and /lang subdirectory.
-    * Remove 'Domain Path' from plugin header.
-* Change: Move download section below listing and make it a bit more inline.
-* Change: Move initialization from `init()` into new `do_init()`, with `init()` hooking 'plugins_loaded' to invoke.
-* Change: Rename existing `do_init()` to `admin_menu()`.
-* Change: Rename existing `admin_menu()` to `register_admin_menu()`, which is now called from `admin_menu()` instead of a hook callback.
-* New: Introduce `get_post_ids()`, `help_tabs()`.
-* Change: Add padding to table cells.
-* Change: Make default value for 'fields' arg of `get_emails()` an empty array since function already enforces default value.
-* Change: Change admin page header from 'h2' to 'h1' tag.
-* Change: Minor improvements to inline docs and test docs.
-* New: Create empty index.php to prevent files from being listed if web server has enabled directory listings.
-* Change: Update screenshots.
-* Change: Note compatibility through WP 4.4+.
-* Change: Remove support for WordPress older than 4.1.
-* Change: Update copyright date (2016).
-
 _Full changelog is available in [CHANGELOG.md](https://github.com/coffee2code/commenter-emails/blob/master/CHANGELOG.md)._
 
 
 == Upgrade Notice ==
+
+= 2.5.1 =
+Trivial update: modernized unit tests and noted compatibility through WP 5.2+
 
 = 2.5 =
 Minor update: tweaked plugin initialization, noted compatibility through WP 5.1+, created CHANGELOG.md to store historical changelog outside of readme.txt, and updated copyright date (2019)

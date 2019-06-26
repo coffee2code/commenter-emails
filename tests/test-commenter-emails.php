@@ -65,7 +65,7 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	}
 
 	public function test_version() {
-		$this->assertEquals( '2.5', c2c_CommenterEmails::version() );
+		$this->assertEquals( '2.5.1', c2c_CommenterEmails::version() );
 	}
 
 	//
