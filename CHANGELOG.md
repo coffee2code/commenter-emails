@@ -1,5 +1,8 @@
 # Changelog
 
+## _(in-progress)_
+* Change: Update unit test install script and bootstrap to use latest WP unit test repo
+
 ## 2.5 _(2019-04-17)_
 * New: Add README.md file
 * New: Add CHANGELOG.md file and move all but most recent changelog entries into it
