@@ -40,7 +40,7 @@
 
 This release introduces the ability to limit listing commenter information for specific posts, as well as many minor behind-the-scenes changes.
 
-## Details:
+### Details:
 
 * Feature: Add ability to list commenter emails for selected posts.
     * Add 'Help' panel to setting page with input field for comma-separated post IDs.
