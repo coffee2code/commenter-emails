@@ -10,7 +10,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Description: Extract a listing of data for all commenters (email addresses, names, URLs), and an option to export that data as a CSV file.
  *
- * Compatible with WordPress 4.1+ through 5.2+.
+ * Compatible with WordPress 4.1+ through 5.3+.
  *
  * =>> Read the accompanying readme.txt file for instructions and documentation.
  * =>> Also, visit the plugin's homepage for additional information and updates.
