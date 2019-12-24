@@ -4,12 +4,18 @@ defined( 'ABSPATH' ) or die();
 
 class Commenter_Emails_Test extends WP_UnitTestCase {
 
+	protected $captured_c2c_commenter_emails_show_emails;
+	protected $captured_c2c_commenter_emails_filename;
+
 	public function setUp() {
 		parent::setUp();
 	}
 
 	public function tearDown() {
 		parent::tearDown();
+
+		remove_filter( 'c2c_commenter_emails_show_emails', array( $this, 'c2c_commenter_emails_show_emails' ) );
+		remove_filter( 'c2c_commenter_emails_filename',    array( $this, 'c2c_commenter_emails_filename' ) );
 	}
 
 
@@ -53,6 +59,13 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		return $comment_ids;
 	}
 
+	public function c2c_commenter_emails_show_emails( $value ) {
+		return $this->captured_c2c_commenter_emails_show_emails = $value;
+	}
+
+	public function c2c_commenter_emails_filename( $filename ) {
+		return $this->captured_c2c_commenter_emails_filename = $filename;
+	}
 
 	//
 	//
@@ -284,6 +297,31 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		$this->test_admin_stuff();
 
 		$this->assertEquals( 11, has_action( 'admin_menu', array( 'c2c_CommenterEmails', 'admin_menu' ) ) );
+	}
+
+	/*
+	 * filter: c2c_commenter_emails_show_emails
+	 */
+
+	public function test_default_for_filter_c2c_commenter_emails_show_emails() {
+		add_filter( 'c2c_commenter_emails_show_emails', array( $this, 'c2c_commenter_emails_show_emails' ) );
+		c2c_CommenterEmails::admin_menu();
+
+		$this->assertTrue( $this->captured_c2c_commenter_emails_show_emails );
+	}
+
+	/*
+	 * filter: c2c_commenter_emails_filename
+	 */
+
+	public function test_default_for_filter_c2c_commenter_emails_filename() {
+		add_filter( 'c2c_commenter_emails_filename', array( $this, 'c2c_commenter_emails_filename' ) );
+		c2c_CommenterEmails::admin_menu();
+
+		$date_str = mysql2date( 'Y-m-d', current_time( 'mysql' ) );
+
+		// Note: This test could fail if run microseconds before midnight.
+		$this->assertRegExp( "/^commenter-emails-{$date_str}-[0-9]{4}.csv$/", $this->captured_c2c_commenter_emails_filename );
 	}
 
 	// TEST: default csv filename is used
