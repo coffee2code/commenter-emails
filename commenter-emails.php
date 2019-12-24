@@ -159,8 +159,10 @@ class c2c_CommenterEmails {
 		 *
 		 * @param string $filename The filename. Default 'commenter-emails-YYYY-MM-DD-H:S.csv'.
 		 */
-		self::$csv_filename    = apply_filters( 'c2c_commenter_emails_filename',        'commenter-emails-' .
-								 mysql2date( 'Y-m-d-Hi', current_time( 'mysql' ) ) . '.csv' );
+		self::$csv_filename = apply_filters(
+			'c2c_commenter_emails_filename',
+			sprintf( 'commenter-emails-%s.csv',  mysql2date( 'Y-m-d-Hi', current_time( 'mysql' ) ) )
+		);
 
 		if ( self::$plugin_page ) {
 			// Handles CSV download.
