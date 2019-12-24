@@ -144,7 +144,7 @@ class c2c_CommenterEmails {
 
 		/**
 		 * Filters whether the listing of email addresses should appear on the
-		 * plugin's admin settings page
+		 * plugin's admin settings page.
 		 *
 		 * @since 1.2
 		 *
@@ -180,7 +180,7 @@ class c2c_CommenterEmails {
 	 * Only checks comments that are approved, have a author email, and are
 	 * of the comment_type 'comment' (or '').
 	 *
-	 * Only one entry is returned per email address.  If a given email address
+	 * Only one entry is returned per email address. If a given email address
 	 * has multiple instances in the database, each with different names, then
 	 * the most recent comment will be used to obtain any additional field data
 	 * such as comment_author, etc.
@@ -270,7 +270,7 @@ class c2c_CommenterEmails {
 			 *                      'comment_author_email' will always be output in the
 			 *                      CSV. Default ['comment_author', 'comment_author_email'].
 			 */
-			$fields    = (array) apply_filters( 'c2c_commenter_emails_fields', $default_fields );
+			$fields = (array) apply_filters( 'c2c_commenter_emails_fields', $default_fields );
 
 			/**
 			 * Filters the user fields included in the download CSV file. By default the

@@ -6,6 +6,7 @@
     * New: Add tests for filters: `c2c_commenter_emails_filename`, `c2c_commenter_emails_show_emails`
 * Change: Use `sprintf()` as a clearer way to create CSV filename rather than building it via concatenation
 * Change: Note compatibility through WP 5.3+
+* Change: Tweak whitespace in code and inline code docs
 * Change: Update copyright date (2020)
 
 ## 2.5.1 _(2019-06-25)_
