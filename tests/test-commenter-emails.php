@@ -14,6 +14,9 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	public function tearDown() {
 		parent::tearDown();
 
+		$captured_c2c_commenter_emails_show_emails = null;
+		$captured_c2c_commenter_emails_filename = null;
+
 		remove_filter( 'c2c_commenter_emails_show_emails', array( $this, 'c2c_commenter_emails_show_emails' ) );
 		remove_filter( 'c2c_commenter_emails_filename',    array( $this, 'c2c_commenter_emails_filename' ) );
 	}
@@ -65,6 +68,10 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 
 	public function c2c_commenter_emails_filename( $filename ) {
 		return $this->captured_c2c_commenter_emails_filename = $filename;
+	}
+
+	public function change_c2c_commenter_emails_filename( $filename ) {
+		return sprintf( 'custom-file-output.%s.csv', mysql2date( 'Y.m.d', current_time( 'mysql' ) ) );
 	}
 
 	//
@@ -310,6 +317,18 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		$this->assertTrue( $this->captured_c2c_commenter_emails_show_emails );
 	}
 
+	public function test_filter_c2c_commenter_emails_show_emails() {
+		add_filter( 'c2c_commenter_emails_show_emails', '__return_false' );
+		// Capture filtered value.
+		add_filter( 'c2c_commenter_emails_show_emails', array( $this, 'c2c_commenter_emails_show_emails' ) );
+		c2c_CommenterEmails::admin_menu();
+
+		$this->assertFalse( $this->captured_c2c_commenter_emails_show_emails );
+
+		// Cleanup
+		remove_filter( 'c2c_commenter_emails_show_emails', '__return_false' );
+	}
+
 	/*
 	 * filter: c2c_commenter_emails_filename
 	 */
@@ -322,6 +341,21 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 
 		// Note: This test could fail if run microseconds before midnight.
 		$this->assertRegExp( "/^commenter-emails-{$date_str}-[0-9]{4}.csv$/", $this->captured_c2c_commenter_emails_filename );
+	}
+
+	public function test_filter_c2c_commenter_emails_filename() {
+		add_filter( 'c2c_commenter_emails_filename', array( $this, 'change_c2c_commenter_emails_filename' ) );
+		// Capture filtered value.
+		add_filter( 'c2c_commenter_emails_filename', array( $this, 'c2c_commenter_emails_filename' ) );
+		c2c_CommenterEmails::admin_menu();
+
+		$expected = sprintf( 'custom-file-output.%s.csv', mysql2date( 'Y.m.d', current_time( 'mysql' ) ) );
+
+		// Note: This test could fail if run microseconds before midnight.
+		$this->assertEquals( $expected, $this->captured_c2c_commenter_emails_filename );
+
+		// Cleanup
+		remove_filter( 'c2c_commenter_emails_filename', array( $this, 'change_c2c_commenter_emails_filename' ) );
 	}
 
 	// TEST: default csv filename is used
