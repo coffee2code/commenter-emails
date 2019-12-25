@@ -4,7 +4,7 @@
 * Change: Extract filename handling out from `admin_menu` and into new `get_filename()`
 * Unit tests:
     * New: Add test to verify plugin hooks `plugins_loaded` action to initialize itself
-    * New: Add tests for filters: `c2c_commenter_emails_filename`, `c2c_commenter_emails_show_emails`
+    * New: Add tests for filters: `c2c_commenter_emails_filename`, `c2c_commenter_emails_show_csv_button`, `c2c_commenter_emails_show_emails`
 * Change: Use `sprintf()` as a clearer way to create CSV filename rather than building it via concatenation
 * Change: Note compatibility through WP 5.3+
 * Change: Tweak whitespace in code and inline code docs

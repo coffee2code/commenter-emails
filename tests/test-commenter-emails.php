@@ -4,6 +4,7 @@ defined( 'ABSPATH' ) or die();
 
 class Commenter_Emails_Test extends WP_UnitTestCase {
 
+	protected $captured_c2c_commenter_emails_show_csv_button;
 	protected $captured_c2c_commenter_emails_show_emails;
 	protected $captured_c2c_commenter_emails_filename = '';
 
@@ -17,6 +18,7 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		$captured_c2c_commenter_emails_show_emails = null;
 		$captured_c2c_commenter_emails_filename = '';
 
+		remove_filter( 'c2c_commenter_emails_show_csv_button', array( $this, 'c2c_commenter_emails_show_csv_button' ) );
 		remove_filter( 'c2c_commenter_emails_show_emails', array( $this, 'c2c_commenter_emails_show_emails' ) );
 		remove_filter( 'c2c_commenter_emails_filename',    array( $this, 'c2c_commenter_emails_filename' ) );
 	}
@@ -60,6 +62,10 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		}
 
 		return $comment_ids;
+	}
+
+	public function c2c_commenter_emails_show_csv_button( $value ) {
+		return $this->captured_c2c_commenter_emails_show_csv_button = $value;
 	}
 
 	public function c2c_commenter_emails_show_emails( $value ) {
@@ -304,6 +310,29 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		$this->test_admin_stuff();
 
 		$this->assertEquals( 11, has_action( 'admin_menu', array( 'c2c_CommenterEmails', 'admin_menu' ) ) );
+	}
+
+	/*
+	 * filter: c2c_commenter_emails_show_csv_button
+	 */
+
+	public function test_default_for_filter_c2c_commenter_emails_show_csv_button() {
+		add_filter( 'c2c_commenter_emails_show_csv_button', array( $this, 'c2c_commenter_emails_show_csv_button' ) );
+		c2c_CommenterEmails::admin_menu();
+
+		$this->assertTrue( $this->captured_c2c_commenter_emails_show_csv_button );
+	}
+
+	public function test_c2c_commenter_emails_show_csv_button() {
+		add_filter( 'c2c_commenter_emails_show_csv_button', '__return_false' );
+		// Capture filtered value.
+		add_filter( 'c2c_commenter_emails_show_csv_button', array( $this, 'c2c_commenter_emails_show_csv_button' ) );
+		c2c_CommenterEmails::admin_menu();
+
+		$this->assertFalse( $this->captured_c2c_commenter_emails_show_csv_button );
+
+		// Cleanup
+		remove_filter( 'c2c_commenter_emails_show_csv_button', '__return_false' );
 	}
 
 	/*
