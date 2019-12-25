@@ -98,6 +98,10 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		$this->assertEquals( 10, has_action( 'plugins_loaded', array( 'c2c_CommenterEmails', 'init' ) ) );
 	}
 
+	public function test_hooks_action_admin_menu_for_admin_menu() {
+		$this->assertEquals( 11, has_action( 'admin_menu', array( 'c2c_CommenterEmails', 'admin_menu' ) ) );
+	}
+
 	//
 	// get_emails()
 	//
@@ -280,18 +284,6 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		wp_spam_comment(   $comment_ids[2] );
 
 		$this->test_get_emails_default( array_slice( $comment_ids, 3 ) );
-	}
-
-	//
-	// Filters
-	//
-
-	public function test_hooks_action_plugins_loaded_for_do_init() {
-		$this->assertEquals( 10, has_action( 'plugins_loaded', array( 'c2c_CommenterEmails', 'init' ) ) );
-	}
-
-	public function test_hooks_action_admin_menu_for_admin_menu() {
-		$this->assertEquals( 11, has_action( 'admin_menu', array( 'c2c_CommenterEmails', 'admin_menu' ) ) );
 	}
 
 	/*
