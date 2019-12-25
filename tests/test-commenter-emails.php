@@ -326,7 +326,6 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 
 	public function test_default_for_filter_c2c_commenter_emails_show_csv_button() {
 		add_filter( 'c2c_commenter_emails_show_csv_button', array( $this, 'c2c_commenter_emails_show_csv_button' ) );
-		c2c_CommenterEmails::admin_menu();
 
 		$this->assertTrue( c2c_CommenterEmails::should_show_csv_button() );
 		$this->assertTrue( $this->captured_c2c_commenter_emails_show_csv_button );
@@ -336,7 +335,6 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		add_filter( 'c2c_commenter_emails_show_csv_button', '__return_false' );
 		// Capture filtered value.
 		add_filter( 'c2c_commenter_emails_show_csv_button', array( $this, 'c2c_commenter_emails_show_csv_button' ) );
-		c2c_CommenterEmails::admin_menu();
 
 		$this->assertFalse( c2c_CommenterEmails::should_show_csv_button() );
 		$this->assertFalse( $this->captured_c2c_commenter_emails_show_csv_button );
@@ -359,7 +357,6 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 
 	public function test_default_for_filter_c2c_commenter_emails_show_emails() {
 		add_filter( 'c2c_commenter_emails_show_emails', array( $this, 'c2c_commenter_emails_show_emails' ) );
-		c2c_CommenterEmails::admin_menu();
 
 		$this->assertTrue( c2c_CommenterEmails::should_show_email_addresses() );
 		$this->assertTrue( $this->captured_c2c_commenter_emails_show_emails );
@@ -369,7 +366,6 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		add_filter( 'c2c_commenter_emails_show_emails', '__return_false' );
 		// Capture filtered value.
 		add_filter( 'c2c_commenter_emails_show_emails', array( $this, 'c2c_commenter_emails_show_emails' ) );
-		c2c_CommenterEmails::admin_menu();
 
 		$this->assertFalse( c2c_CommenterEmails::should_show_email_addresses() );
 		$this->assertFalse( $this->captured_c2c_commenter_emails_show_emails );
@@ -395,7 +391,6 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 
 	public function test_default_for_filter_c2c_commenter_emails_filename() {
 		add_filter( 'c2c_commenter_emails_filename', array( $this, 'c2c_commenter_emails_filename' ) );
-		c2c_CommenterEmails::admin_menu();
 
 		$date_str = mysql2date( 'Y-m-d', current_time( 'mysql' ) );
 		$regex    = "/^commenter-emails-{$date_str}-[0-9]{4}.csv$/";
@@ -409,7 +404,6 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		add_filter( 'c2c_commenter_emails_filename', array( $this, 'change_c2c_commenter_emails_filename' ) );
 		// Capture filtered value.
 		add_filter( 'c2c_commenter_emails_filename', array( $this, 'c2c_commenter_emails_filename' ) );
-		c2c_CommenterEmails::admin_menu();
 
 		$expected = sprintf( 'custom-file-output.%s.csv', mysql2date( 'Y.m.d', current_time( 'mysql' ) ) );
 
