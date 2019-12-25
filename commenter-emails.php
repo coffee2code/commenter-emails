@@ -51,14 +51,6 @@ if ( ! class_exists( 'c2c_CommenterEmails' ) ) :
 
 class c2c_CommenterEmails {
 	/**
-	 * Setting to determine if the plugin's admin page should show the list of emails.
-	 *
-	 * @var string
-	 * @access private
-	 */
-	private static $show_emails     = '';
-
-	/**
 	 * Stored value of plugin basename.
 	 *
 	 * @var string
@@ -132,6 +124,27 @@ class c2c_CommenterEmails {
 	}
 
 	/**
+	 * Determines if the listing of email addresses should appear on the plugin's
+	 * admin settings page.
+	 *
+	 * @access public
+	 * @since 2.6
+	 *
+	 * @return bool True if the listing of email addresses should be shown, else false.
+	 */
+	public static function should_show_email_addresses() {
+		/**
+		 * Filters whether the listing of email addresses should appear on the
+		 * plugin's admin settings page.
+		 *
+		 * @since 1.2
+		 *
+		 * @param bool $show_emails Show the listing of email addresses? Default true.
+		 */
+		return (bool) apply_filters( 'c2c_commenter_emails_show_emails', true );
+	}
+
+	/**
 	 * Returns the name to be used for the CSV file.
 	 *
 	 * Uses `c2c_commenter_emails_filename` filter to customize filename.
@@ -162,16 +175,6 @@ class c2c_CommenterEmails {
 	 */
 	public static function admin_menu() {
 		self::register_admin_menu();
-
-		/**
-		 * Filters whether the listing of email addresses should appear on the
-		 * plugin's admin settings page.
-		 *
-		 * @since 1.2
-		 *
-		 * @param bool $show_emails Show the listing of email addresses? Default true.
-		 */
-		self::$show_emails     = (bool) apply_filters( 'c2c_commenter_emails_show_emails',     true );
 
 		if ( self::$plugin_page ) {
 			// Handles CSV download.
@@ -403,7 +406,7 @@ class c2c_CommenterEmails {
 		echo '</p>';
 		echo '</div>';
 
-		if ( self::$show_emails ) {
+		if ( self::should_show_email_addresses() ) {
 			echo '<div class="wrap">';
 			echo '<h2>' . __( 'All Commenter Emails', 'commenter-emails' ) . '</h2>';
 

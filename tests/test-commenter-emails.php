@@ -346,6 +346,14 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	}
 
 	/*
+	 * should_show_email_addresses()
+	 */
+
+	public function test_default_for_should_show_email_addresses() {
+		$this->assertTrue( c2c_CommenterEmails::should_show_email_addresses() );
+	}
+
+	/*
 	 * filter: c2c_commenter_emails_show_emails
 	 */
 
@@ -353,6 +361,7 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		add_filter( 'c2c_commenter_emails_show_emails', array( $this, 'c2c_commenter_emails_show_emails' ) );
 		c2c_CommenterEmails::admin_menu();
 
+		$this->assertTrue( c2c_CommenterEmails::should_show_email_addresses() );
 		$this->assertTrue( $this->captured_c2c_commenter_emails_show_emails );
 	}
 
@@ -362,6 +371,7 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		add_filter( 'c2c_commenter_emails_show_emails', array( $this, 'c2c_commenter_emails_show_emails' ) );
 		c2c_CommenterEmails::admin_menu();
 
+		$this->assertFalse( c2c_CommenterEmails::should_show_email_addresses() );
 		$this->assertFalse( $this->captured_c2c_commenter_emails_show_emails );
 
 		// Cleanup
