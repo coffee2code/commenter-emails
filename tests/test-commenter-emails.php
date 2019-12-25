@@ -413,6 +413,20 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		);
 	}
 
+	/*
+	 * enqueue_admin_css()
+	 */
+
+	public function test_enqueue_admin_css() {
+		$this->assertFalse( wp_style_is( 'c2c_CommenterEmails', 'registered' ) );
+		$this->assertFalse( wp_style_is( 'c2c_CommenterEmails', 'enqueued' ) );
+
+		c2c_CommenterEmails::enqueue_admin_css();
+
+		$this->assertTrue( wp_style_is( 'c2c_CommenterEmails', 'registered' ) );
+		$this->assertTrue( wp_style_is( 'c2c_CommenterEmails', 'enqueued' ) );
+	}
+
 	// TEST: default csv filename is used
 
 	// TEST: custom csv filename is used
