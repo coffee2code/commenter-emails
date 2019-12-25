@@ -283,32 +283,14 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	}
 
 	//
-	// Admin area tests. All tests beyond this point assume the admin area.
-	//
-
-	public function test_admin_stuff() {
-		if ( ! defined( 'WP_ADMIN' ) ) {
-			define( 'WP_ADMIN', true );
-		}
-		c2c_CommenterEmails::init();
-
-		$this->assertTrue( is_admin() );
-	}
-
-
-	//
 	// Filters
 	//
 
 	public function test_hooks_action_plugins_loaded_for_do_init() {
-		$this->test_admin_stuff();
-
 		$this->assertEquals( 10, has_action( 'plugins_loaded', array( 'c2c_CommenterEmails', 'init' ) ) );
 	}
 
 	public function test_hooks_action_admin_menu_for_admin_menu() {
-		$this->test_admin_stuff();
-
 		$this->assertEquals( 11, has_action( 'admin_menu', array( 'c2c_CommenterEmails', 'admin_menu' ) ) );
 	}
 
