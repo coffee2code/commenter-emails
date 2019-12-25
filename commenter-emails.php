@@ -67,14 +67,6 @@ class c2c_CommenterEmails {
 	private static $show_emails     = '';
 
 	/**
-	 * CSV filename.
-	 *
-	 * @var string
-	 * @access private
-	 */
-	private static $csv_filename    = '';
-
-	/**
 	 * Stored value of plugin basename.
 	 *
 	 * @var string
@@ -127,6 +119,32 @@ class c2c_CommenterEmails {
 	}
 
 	/**
+	 * Returns the name to be used for the CSV file.
+	 *
+	 * Uses `c2c_commenter_emails_filename` filter to customize filename.
+	 *
+	 * Note: Does not attempt to ensure filtered filename is sane.
+	 *
+	 * @access public
+	 * @since 2.6
+	 *
+	 * @return string
+	 */
+	public static function get_filename() {
+		/**
+		 * Filters the name used for the .csv file when being downloaded.
+		 *
+		 * @since 1.2
+		 *
+		 * @param string $filename The filename. Default 'commenter-emails-YYYY-MM-DD-H:S.csv'.
+		 */
+		return apply_filters(
+			'c2c_commenter_emails_filename',
+			sprintf( 'commenter-emails-%s.csv',  mysql2date( 'Y-m-d-Hi', current_time( 'mysql' ) ) )
+		);
+	}
+
+	/**
 	 * Initialize hooks and data.
 	 */
 	public static function admin_menu() {
@@ -151,18 +169,6 @@ class c2c_CommenterEmails {
 		 * @param bool $show_emails Show the listing of email addresses? Default true.
 		 */
 		self::$show_emails     = (bool) apply_filters( 'c2c_commenter_emails_show_emails',     true );
-
-		/**
-		 * Filters the name used for the .csv file when being downloaded.
-		 *
-		 * @since 1.2
-		 *
-		 * @param string $filename The filename. Default 'commenter-emails-YYYY-MM-DD-H:S.csv'.
-		 */
-		self::$csv_filename = apply_filters(
-			'c2c_commenter_emails_filename',
-			sprintf( 'commenter-emails-%s.csv',  mysql2date( 'Y-m-d-Hi', current_time( 'mysql' ) ) )
-		);
 
 		if ( self::$plugin_page ) {
 			// Handles CSV download.
@@ -249,10 +255,12 @@ class c2c_CommenterEmails {
 	 * Handles download of commenter emails directly as CSV file.
 	 */
 	public static function handle_csv_download() {
+		$csv_filename = self::get_filename();
+
 		if ( isset( $_GET['download_csv'] ) && '1' == $_GET['download_csv'] ) {
 			header( 'Content-type: text/csv' );
 			header( 'Cache-Control: no-store, no-cache' );
-			header( 'Content-Disposition: attachment; filename="' . self::$csv_filename . '"' );
+			header( 'Content-Disposition: attachment; filename="' . $csv_filename . '"' );
 
 			$outstream = fopen( "php://output", 'w' );
 

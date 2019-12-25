@@ -1,6 +1,7 @@
 # Changelog
 
 ## _(in-progress)_
+* Change: Extract filename handling out from `admin_menu` and into new `get_filename()`
 * Unit tests:
     * New: Add test to verify plugin hooks `plugins_loaded` action to initialize itself
     * New: Add tests for filters: `c2c_commenter_emails_filename`, `c2c_commenter_emails_show_emails`
