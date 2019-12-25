@@ -400,6 +400,19 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		remove_filter( 'c2c_commenter_emails_filename', array( $this, 'change_c2c_commenter_emails_filename' ) );
 	}
 
+	/*
+	 * plugin_action_links()
+	 */
+
+	public function test_plugin_action_links() {
+		$expected_file = urlencode( c2c_CommenterEmails::get_plugin_basename() );
+
+		$this->assertEquals(
+			sprintf( '<a href="edit-comments.php?page=%s">Listing</a>', $expected_file ),
+			c2c_CommenterEmails::plugin_action_links( array() )[0]
+		);
+	}
+
 	// TEST: default csv filename is used
 
 	// TEST: custom csv filename is used

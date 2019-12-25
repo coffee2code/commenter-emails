@@ -8,6 +8,7 @@
 * Unit tests:
     * New: Add test to verify plugin hooks `plugins_loaded` action to initialize itself
     * New: Add tests for filters: `c2c_commenter_emails_filename`, `c2c_commenter_emails_show_csv_button`, `c2c_commenter_emails_show_emails`
+    * New: Add tests for functions: `plugin_action_links()`
     * Delete: Remove unnecessary `test_admin_stuff()` and its use in other tests
     * Delete: Remove duplicated test
 * Change: Use `sprintf()` as a clearer way to create CSV filename rather than building it via concatenation
