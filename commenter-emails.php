@@ -121,7 +121,7 @@ class c2c_CommenterEmails {
 	 * @access public
 	 * @since 2.6
 	 *
-	 * @return bool True is the CSV button should be shown, else false.
+	 * @return bool True if the CSV button should be shown, else false.
 	 */
 	public static function should_show_csv_button() {
 		/**
