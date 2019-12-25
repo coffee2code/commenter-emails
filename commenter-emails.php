@@ -103,6 +103,18 @@ class c2c_CommenterEmails {
 	}
 
 	/**
+	 * Returns the basename for the plugin's main file.
+	 *
+	 * @access public
+	 * @since 2.6
+	 *
+	 * @return string
+	 */
+	public static function get_plugin_basename() {
+		return self::$plugin_basename;
+	}
+
+	/**
 	 * Determines if the button to download a CSV file of the commenter emails
 	 * list should be present on the plugin's admin settings page.
 	 *

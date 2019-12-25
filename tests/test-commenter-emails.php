@@ -287,6 +287,17 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	}
 
 	/*
+	 * get_plugin_basename()
+	 */
+
+	public function test_get_plugin_basename() {
+		$this->assertEquals(
+			plugin_basename( dirname( dirname( __FILE__ ) ) . '/commenter-emails.php' ),
+			c2c_CommenterEmails::get_plugin_basename()
+		);
+	}
+
+	/*
 	 * should_show_csv_button()
 	 */
 
