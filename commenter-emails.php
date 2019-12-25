@@ -51,14 +51,6 @@ if ( ! class_exists( 'c2c_CommenterEmails' ) ) :
 
 class c2c_CommenterEmails {
 	/**
-	 * Setting to determine if the plugin's admin page should show the CSV button.
-	 *
-	 * @var string
-	 * @access private
-	 */
-	private static $show_csv_button = '';
-
-	/**
 	 * Setting to determine if the plugin's admin page should show the list of emails.
 	 *
 	 * @var string
@@ -119,6 +111,27 @@ class c2c_CommenterEmails {
 	}
 
 	/**
+	 * Determines if the button to download a CSV file of the commenter emails
+	 * list should be present on the plugin's admin settings page.
+	 *
+	 * @access public
+	 * @since 2.6
+	 *
+	 * @return bool True is the CSV button should be shown, else false.
+	 */
+	public static function should_show_csv_button() {
+		/**
+		 * Filters whether the button to download a CSV file of the commenter emails
+		 * list should be present on the plugin's admin settings page.
+		 *
+		 * @since 1.2
+		 *
+		 * @param bool $show_csv_button Show the CSV button? Default true.
+		 */
+		return (bool) apply_filters( 'c2c_commenter_emails_show_csv_button', true );
+	}
+
+	/**
 	 * Returns the name to be used for the CSV file.
 	 *
 	 * Uses `c2c_commenter_emails_filename` filter to customize filename.
@@ -149,16 +162,6 @@ class c2c_CommenterEmails {
 	 */
 	public static function admin_menu() {
 		self::register_admin_menu();
-
-		/**
-		 * Filters whether the button to download a CSV file of the commenter emails
-		 * list should be present on the plugin's admin settings page.
-		 *
-		 * @since 1.2
-		 *
-		 * @param bool $show_csv_button Show the CSV button? Default true.
-		 */
-		self::$show_csv_button = (bool) apply_filters( 'c2c_commenter_emails_show_csv_button', true );
 
 		/**
 		 * Filters whether the listing of email addresses should appear on the
@@ -441,7 +444,7 @@ class c2c_CommenterEmails {
 			echo '</div>';
 		}
 
-		if ( self::$show_csv_button ) {
+		if ( self::should_show_csv_button() ) {
 			echo '<div class="wrap">';
 			echo '<p><form action="" method="get">';
 			echo '<label for="submit">';

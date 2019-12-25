@@ -313,6 +313,14 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	}
 
 	/*
+	 * should_show_csv_button()
+	 */
+
+	public function test_default_for_should_show_csv_button() {
+		$this->assertTrue( c2c_CommenterEmails::should_show_csv_button() );
+	}
+
+	/*
 	 * filter: c2c_commenter_emails_show_csv_button
 	 */
 
@@ -320,6 +328,7 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		add_filter( 'c2c_commenter_emails_show_csv_button', array( $this, 'c2c_commenter_emails_show_csv_button' ) );
 		c2c_CommenterEmails::admin_menu();
 
+		$this->assertTrue( c2c_CommenterEmails::should_show_csv_button() );
 		$this->assertTrue( $this->captured_c2c_commenter_emails_show_csv_button );
 	}
 
@@ -329,6 +338,7 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		add_filter( 'c2c_commenter_emails_show_csv_button', array( $this, 'c2c_commenter_emails_show_csv_button' ) );
 		c2c_CommenterEmails::admin_menu();
 
+		$this->assertFalse( c2c_CommenterEmails::should_show_csv_button() );
 		$this->assertFalse( $this->captured_c2c_commenter_emails_show_csv_button );
 
 		// Cleanup
