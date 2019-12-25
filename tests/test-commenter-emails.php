@@ -4,9 +4,7 @@ defined( 'ABSPATH' ) or die();
 
 class Commenter_Emails_Test extends WP_UnitTestCase {
 
-	protected $captured_c2c_commenter_emails_show_csv_button;
-	protected $captured_c2c_commenter_emails_show_emails;
-	protected $captured_c2c_commenter_emails_filename = '';
+	protected $captured_filter_value = array();
 
 	public function setUp() {
 		parent::setUp();
@@ -15,12 +13,16 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	public function tearDown() {
 		parent::tearDown();
 
-		$captured_c2c_commenter_emails_show_emails = null;
-		$captured_c2c_commenter_emails_filename = '';
+		$this->captured_filter_value = array();
 
-		remove_filter( 'c2c_commenter_emails_show_csv_button', array( $this, 'c2c_commenter_emails_show_csv_button' ) );
-		remove_filter( 'c2c_commenter_emails_show_emails', array( $this, 'c2c_commenter_emails_show_emails' ) );
-		remove_filter( 'c2c_commenter_emails_filename',    array( $this, 'c2c_commenter_emails_filename' ) );
+		$captured_filters = array(
+			'c2c_commenter_emails_filename',
+			'c2c_commenter_emails_show_csv_button',
+			'c2c_commenter_emails_show_emails',
+		);
+		foreach ( $captured_filters as $filter ) {
+			remove_filter( $filter, array( $this, 'capture_filter_value' ) );
+		}
 	}
 
 
@@ -64,16 +66,8 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		return $comment_ids;
 	}
 
-	public function c2c_commenter_emails_show_csv_button( $value ) {
-		return $this->captured_c2c_commenter_emails_show_csv_button = $value;
-	}
-
-	public function c2c_commenter_emails_show_emails( $value ) {
-		return $this->captured_c2c_commenter_emails_show_emails = $value;
-	}
-
-	public function c2c_commenter_emails_filename( $filename ) {
-		return $this->captured_c2c_commenter_emails_filename = $filename;
+	public function capture_filter_value( $value ) {
+		return $this->captured_filter_value[ current_filter() ] = $value;
 	}
 
 	public function change_c2c_commenter_emails_filename( $filename ) {
@@ -310,19 +304,19 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	 */
 
 	public function test_default_for_filter_c2c_commenter_emails_show_csv_button() {
-		add_filter( 'c2c_commenter_emails_show_csv_button', array( $this, 'c2c_commenter_emails_show_csv_button' ) );
+		add_filter( 'c2c_commenter_emails_show_csv_button', array( $this, 'capture_filter_value' ) );
 
 		$this->assertTrue( c2c_CommenterEmails::should_show_csv_button() );
-		$this->assertTrue( $this->captured_c2c_commenter_emails_show_csv_button );
+		$this->assertTrue( $this->captured_filter_value[ 'c2c_commenter_emails_show_csv_button' ] );
 	}
 
 	public function test_c2c_commenter_emails_show_csv_button() {
 		add_filter( 'c2c_commenter_emails_show_csv_button', '__return_false' );
 		// Capture filtered value.
-		add_filter( 'c2c_commenter_emails_show_csv_button', array( $this, 'c2c_commenter_emails_show_csv_button' ) );
+		add_filter( 'c2c_commenter_emails_show_csv_button', array( $this, 'capture_filter_value' ) );
 
 		$this->assertFalse( c2c_CommenterEmails::should_show_csv_button() );
-		$this->assertFalse( $this->captured_c2c_commenter_emails_show_csv_button );
+		$this->assertFalse( $this->captured_filter_value[ 'c2c_commenter_emails_show_csv_button' ] );
 
 		// Cleanup
 		remove_filter( 'c2c_commenter_emails_show_csv_button', '__return_false' );
@@ -341,19 +335,19 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	 */
 
 	public function test_default_for_filter_c2c_commenter_emails_show_emails() {
-		add_filter( 'c2c_commenter_emails_show_emails', array( $this, 'c2c_commenter_emails_show_emails' ) );
+		add_filter( 'c2c_commenter_emails_show_emails', array( $this, 'capture_filter_value' ) );
 
 		$this->assertTrue( c2c_CommenterEmails::should_show_email_addresses() );
-		$this->assertTrue( $this->captured_c2c_commenter_emails_show_emails );
+		$this->assertTrue( $this->captured_filter_value[ 'c2c_commenter_emails_show_emails' ] );
 	}
 
 	public function test_filter_c2c_commenter_emails_show_emails() {
 		add_filter( 'c2c_commenter_emails_show_emails', '__return_false' );
 		// Capture filtered value.
-		add_filter( 'c2c_commenter_emails_show_emails', array( $this, 'c2c_commenter_emails_show_emails' ) );
+		add_filter( 'c2c_commenter_emails_show_emails', array( $this, 'capture_filter_value' ) );
 
 		$this->assertFalse( c2c_CommenterEmails::should_show_email_addresses() );
-		$this->assertFalse( $this->captured_c2c_commenter_emails_show_emails );
+		$this->assertFalse( $this->captured_filter_value[ 'c2c_commenter_emails_show_emails' ] );
 
 		// Cleanup
 		remove_filter( 'c2c_commenter_emails_show_emails', '__return_false' );
@@ -375,26 +369,26 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	 */
 
 	public function test_default_for_filter_c2c_commenter_emails_filename() {
-		add_filter( 'c2c_commenter_emails_filename', array( $this, 'c2c_commenter_emails_filename' ) );
+		add_filter( 'c2c_commenter_emails_filename', array( $this, 'capture_filter_value' ) );
 
 		$date_str = mysql2date( 'Y-m-d', current_time( 'mysql' ) );
 		$regex    = "/^commenter-emails-{$date_str}-[0-9]{4}.csv$/";
 
 		// Note: These assertions could fail if run microseconds before midnight.
 		$this->assertRegExp( $regex, c2c_CommenterEmails::get_filename() );
-		$this->assertRegExp( $regex, $this->captured_c2c_commenter_emails_filename );
+		$this->assertRegExp( $regex, $this->captured_filter_value[ 'c2c_commenter_emails_filename' ] );
 	}
 
 	public function test_filter_c2c_commenter_emails_filename() {
 		add_filter( 'c2c_commenter_emails_filename', array( $this, 'change_c2c_commenter_emails_filename' ) );
 		// Capture filtered value.
-		add_filter( 'c2c_commenter_emails_filename', array( $this, 'c2c_commenter_emails_filename' ) );
+		add_filter( 'c2c_commenter_emails_filename', array( $this, 'capture_filter_value' ) );
 
 		$expected = sprintf( 'custom-file-output.%s.csv', mysql2date( 'Y.m.d', current_time( 'mysql' ) ) );
 
 		// Note: These assertions could fail if run microseconds before midnight.
 		$this->assertEquals( $expected, c2c_CommenterEmails::get_filename() );
-		$this->assertEquals( $expected, $this->captured_c2c_commenter_emails_filename );
+		$this->assertEquals( $expected, $this->captured_filter_value[ 'c2c_commenter_emails_filename' ] );
 
 		// Cleanup
 		remove_filter( 'c2c_commenter_emails_filename', array( $this, 'change_c2c_commenter_emails_filename' ) );
