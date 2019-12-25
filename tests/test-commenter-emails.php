@@ -396,7 +396,7 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	}
 
 	public function test_filter_c2c_commenter_emails_filename() {
-		add_filter( 'c2c_commenter_emails_filename', array( $this, 'change_c2c_commenter_emails_filename' ), 9 );
+		add_filter( 'c2c_commenter_emails_filename', array( $this, 'change_c2c_commenter_emails_filename' ) );
 		// Capture filtered value.
 		add_filter( 'c2c_commenter_emails_filename', array( $this, 'c2c_commenter_emails_filename' ) );
 		c2c_CommenterEmails::admin_menu();
