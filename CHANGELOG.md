@@ -11,7 +11,7 @@
     * New: Add tests for functions: `plugin_action_links()`
     * Delete: Remove unnecessary `test_admin_stuff()` and its use in other tests
     * Delete: Remove duplicated test
-* Change: Use `sprintf()` as a clearer way to create CSV filename rather than building it via concatenation
+* Change: Use `sprintf()` in places as a clearer way to construct strings rather than building them via concatenation
 * Change: Note compatibility through WP 5.3+
 * Change: Tweak whitespace in code and inline code docs
 * Change: Update copyright date (2020)

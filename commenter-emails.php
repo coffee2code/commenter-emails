@@ -359,7 +359,11 @@ class c2c_CommenterEmails {
 	 * @return array The action links.
 	 */
 	public static function plugin_action_links( $action_links ) {
-		$settings_link = '<a href="edit-comments.php?page=' . urlencode( self::$plugin_basename ) . '">' . __( 'Listing', 'commenter-emails' ) . '</a>';
+		$settings_link = sprintf(
+			'<a href="%s">%s</a>',
+			esc_url( 'edit-comments.php?page=' . urlencode( self::$plugin_basename ) ),
+			__( 'Listing', 'commenter-emails' )
+		);
 		array_unshift( $action_links, $settings_link );
 		return $action_links;
 	}
