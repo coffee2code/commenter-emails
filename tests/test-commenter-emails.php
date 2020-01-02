@@ -421,10 +421,6 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		$this->assertTrue( wp_style_is( 'c2c_CommenterEmails', 'enqueued' ) );
 	}
 
-	// TEST: default csv filename is used
-
-	// TEST: custom csv filename is used
-
 	// TEST: default separator used in csv
 
 	// TEST: comment_author_url included in csv via setting
@@ -432,8 +428,6 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	// TEST: custom fields output to csv via filter c2c_commenter_emails_fields
 
 	// TEST: custom separator use in csv via filter c2c_commenter_emails_field_separator
-
-	// TEST: plugin action links added
 
 	// TEST: plugin menu option added under Comments
 
