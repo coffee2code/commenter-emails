@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.1
 Tested up to: 5.3
-Stable tag: 2.5.1
+Stable tag: 2.6
 
 Extract a listing of data for all commenters (email addresses, names, URLs), and an option to export that data as a CSV file.
 
@@ -168,6 +168,27 @@ add_filter( 'c2c_commenter_emails_field_separator', 'change_ce_field_separator' 
 
 == Changelog ==
 
+= 2.6 (2020-01-01) =
+Highlights:
+* This minor release notes compatibility through WP 5.3+, refactors some of the code, expands unit testing, and updates the copyright date (2020).
+
+Details:
+* Change: Extract filename handling out from `admin_menu` and into new `get_filename()`
+* Change: Extract logic to determine if CSV button should be shown out from `admin_menu` and into new `should_show_csv_button()`
+* Change: Extract logic to determine if email addresses should be listed on the admin page out from `admin_menu` and into new `should_show_email_addresses()`
+* New: Add `get_plugin_basename()` to retrieve the plugin's basename
+* Unit tests:
+    * New: Add test to verify plugin hooks `plugins_loaded` action to initialize itself
+    * New: Add tests for filters: `c2c_commenter_emails_filename`, `c2c_commenter_emails_show_csv_button`, `c2c_commenter_emails_show_emails`
+    * New: Add tests for functions: `enqueue_admin_css()`, `plugin_action_links()`
+    * New: Add approach for capturing hook values
+    * Delete: Remove unnecessary `test_admin_stuff()` and its use in other tests
+    * Delete: Remove duplicated test
+* Change: Use `sprintf()` in places as a clearer way to construct strings rather than building them via concatenation
+* Change: Note compatibility through WP 5.3+
+* Change: Tweak whitespace in code and inline code docs
+* Change: Update copyright date (2020)
+
 = 2.5.1 (2019-06-25) =
 * Change: Update unit test install script and bootstrap to use latest WP unit test repo
 * Change: Note compatibility through WP 5.2+
@@ -192,20 +213,13 @@ add_filter( 'c2c_commenter_emails_field_separator', 'change_ce_field_separator' 
 * Change: Update copyright date (2019)
 * Change: Update License URI to be HTTPS
 
-= 2.4.1 (2017-02-28) =
-* Change: Update unit test bootstrap
-    * Default `WP_TESTS_DIR` to `/tmp/wordpress-tests-lib` rather than erroring out if not defined via environment variable
-    * Enable more error output for unit tests
-* Change: Note compatibility through WP 4.7+
-* Change: Change description
-* Change: Minor readme.txt content and formatting tweaks
-* Change: Update copyright date (2017)
-* New: Add LICENSE file
-
 _Full changelog is available in [CHANGELOG.md](https://github.com/coffee2code/commenter-emails/blob/master/CHANGELOG.md)._
 
 
 == Upgrade Notice ==
+
+= 2.6 =
+Minor update: noted compatibility through WP 5.3+, refactored some of the code, expanded unit testing, and updated copyright date (2020)
 
 = 2.5.1 =
 Trivial update: modernized unit tests and noted compatibility through WP 5.2+

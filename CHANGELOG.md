@@ -1,6 +1,13 @@
 # Changelog
 
-## _(in-progress)_
+## 2.6 _(2020-01-01)_
+
+### Highlights:
+
+This minor release notes compatibility through WP 5.3+, refactors some of the code, expands unit testing, and updates the copyright date (2020).
+
+### Details:
+
 * Change: Extract filename handling out from `admin_menu` and into new `get_filename()`
 * Change: Extract logic to determine if CSV button should be shown out from `admin_menu` and into new `should_show_csv_button()`
 * Change: Extract logic to determine if email addresses should be listed on the admin page out from `admin_menu` and into new `should_show_email_addresses()`
