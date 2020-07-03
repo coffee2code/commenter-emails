@@ -66,11 +66,15 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		return sprintf( 'custom-file-output.%s.csv', mysql2date( 'Y.m.d', current_time( 'mysql' ) ) );
 	}
 
+
+
 	//
 	//
 	// TESTS
 	//
 	//
+
+
 
 	public function test_class_exists() {
 		$this->assertTrue( class_exists( 'c2c_CommenterEmails' ) );

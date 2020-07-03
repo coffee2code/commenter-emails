@@ -8,6 +8,7 @@
     * New: Add tests for `admin_menu()`, `register_admin_menu()`
     * Change: Use HTTPS for link to WP SVN repository in bin script for configuring unit tests
     * Change: Remove unnecessary unregistering of hooks in `tearDown()`
+    * Change: Add more spacing around "Tests" section separator
 
 ## 2.6 _(2020-01-01)_
 
