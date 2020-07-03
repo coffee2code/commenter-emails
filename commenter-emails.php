@@ -473,7 +473,9 @@ class c2c_CommenterEmails {
 		}
 
 		echo '<div class="wrap">';
-		echo '<p class="description">NOTE: If you would like to list only commenters for selected posts, use the "Help" tab above to specify those posts.</p>';
+		echo '<p class="description">';
+		_e( 'NOTE: If you would like to list only commenters for selected posts, use the "Help" tab above to specify those posts.', 'commenter-emails' );
+		echo '</p>';
 		echo '</div>';
 
 		echo '<div id="c2c-ce" class="wrap"><div>';

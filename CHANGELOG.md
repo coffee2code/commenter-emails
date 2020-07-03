@@ -2,6 +2,7 @@
 
 ## _(in-progress)_
 * New: Add TODO.md and move existing TODO list from top of main plugin file into it
+* Change: Make an overlooked string translatable
 * Change: Note compatibility through WP 5.4+
 * Change: Update links to coffee2code.com to be HTTPS
 * Unit tests:
