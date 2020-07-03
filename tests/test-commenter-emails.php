@@ -386,6 +386,20 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	}
 
 	/*
+	 * admin_menu()
+	 */
+
+	public function test_admin_menu() {
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
+		c2c_CommenterEmails::admin_menu();
+		$plugin_page = 'admin_page_var/wp-plugins/commenter-emails/commenter-emails';
+
+		$this->assertEquals( 10, has_action( 'load-' . $plugin_page, array( 'c2c_CommenterEmails', 'handle_csv_download' ) ) );
+		$this->assertEquals( 10, has_action( 'load-' . $plugin_page, array( 'c2c_CommenterEmails', 'enqueue_admin_css' ) ) );
+		$this->assertEquals( 10, has_action( 'load-' . $plugin_page, array( 'c2c_CommenterEmails', 'help_tabs' ) ) );
+	}
+
+	/*
 	 * plugin_action_links()
 	 */
 
