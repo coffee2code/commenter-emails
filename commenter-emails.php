@@ -484,7 +484,7 @@ class c2c_CommenterEmails {
 		echo '</div>';
 
 		echo '<div id="c2c-ce" class="wrap"><div>';
-		printf( __( 'This plugin brought to you by <a href="%s">Scott Reilly, aka coffee2code</a>.', 'commenter-emails' ), 'http://coffee2code.com' );
+		printf( __( 'This plugin brought to you by <a href="%s">Scott Reilly, aka coffee2code</a>.', 'commenter-emails' ), 'https://coffee2code.com' );
 		echo '<span><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ARCFJ9TX3522" title="' . esc_attr__( 'Please consider a donation', 'commenter-emails' ) . '">';
 		_e( 'Did you find this plugin useful?', 'commenter-emails' );
 		echo '</a></span></div></div>';
