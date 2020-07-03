@@ -5,7 +5,7 @@ Tags: commenter, commenters, email, address, contact, visitor, comment, coffee2c
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.1
-Tested up to: 5.3
+Tested up to: 5.4
 Stable tag: 2.6
 
 Extract a listing of data for all commenters (email addresses, names, URLs), and an option to export that data as a CSV file.
