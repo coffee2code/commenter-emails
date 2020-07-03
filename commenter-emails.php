@@ -22,15 +22,6 @@
  */
 
 /*
- * TODO:
- * - Handle large number of commenters (page listing?)
- * - Move settings page export setting from Help panel to Screen Options panel
- * - Ability to limit by date and post categories (and by extension, post ID
- *   exclusion, post author, tag, etc)
- *   See: https://wordpress.org/support/topic/how-to-limit-email-by-date-and-post-category/
- */
-
-/*
 	Copyright (c) 2007-2020 by Scott Reilly (aka coffee2code)
 
 	This program is free software; you can redistribute it and/or
