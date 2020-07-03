@@ -14,15 +14,6 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		parent::tearDown();
 
 		$this->captured_filter_value = array();
-
-		$captured_filters = array(
-			'c2c_commenter_emails_filename',
-			'c2c_commenter_emails_show_csv_button',
-			'c2c_commenter_emails_show_emails',
-		);
-		foreach ( $captured_filters as $filter ) {
-			remove_filter( $filter, array( $this, 'capture_filter_value' ) );
-		}
 	}
 
 
