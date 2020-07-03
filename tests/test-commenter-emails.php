@@ -13,6 +13,7 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 	public function tearDown() {
 		parent::tearDown();
 
+		unset( $GLOBALS['submenu'] );
 		$this->captured_filter_value = array();
 	}
 
@@ -397,6 +398,50 @@ class Commenter_Emails_Test extends WP_UnitTestCase {
 		$this->assertEquals( 10, has_action( 'load-' . $plugin_page, array( 'c2c_CommenterEmails', 'handle_csv_download' ) ) );
 		$this->assertEquals( 10, has_action( 'load-' . $plugin_page, array( 'c2c_CommenterEmails', 'enqueue_admin_css' ) ) );
 		$this->assertEquals( 10, has_action( 'load-' . $plugin_page, array( 'c2c_CommenterEmails', 'help_tabs' ) ) );
+	}
+
+	/*
+	 * register_admin_menu()
+	 */
+
+	public function test_register_admin_menu_registers_hook() {
+		c2c_CommenterEmails::register_admin_menu();
+
+		$this->assertEquals( 10, has_filter( 'plugin_action_links_' . c2c_CommenterEmails::get_plugin_basename(), array( 'c2c_CommenterEmails', 'plugin_action_links' ) ) );
+	}
+
+	public function test_register_admin_menu_does_not_add_comments_page_when_current_user_does_not_have_caps() {
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'subscriber' ) ) );
+		c2c_CommenterEmails::register_admin_menu();
+
+		$this->assertEmpty( $GLOBALS['submenu'] );
+	}
+
+	public function test_register_admin_menu_adds_comments_page_when_current_user_has_caps() {
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'administrator' ) ) );
+		c2c_CommenterEmails::register_admin_menu();
+
+		$expected = array(
+			'edit-comments.php' => array(
+				array( 'Commenter Emails', 'manage_options', 'var/wp-plugins/commenter-emails/commenter-emails.php', 'Commenter Emails' ),
+			),
+		);
+
+		$this->assertEquals( $expected, $GLOBALS['submenu'] );
+	}
+
+	/*
+	 * filter: manage_commenter_emails_options
+	 */
+
+	public function test_filter_manage_commenter_emails_options() {
+		add_filter( 'manage_commenter_emails_options', function ( $x ) { return 'custom_cap'; } );
+		wp_set_current_user( self::factory()->user->create( array( 'role' => 'subscriber' ) ) );
+		c2c_CommenterEmails::admin_menu();
+
+		$plugin_page = 'admin_page_var/wp-plugins/commenter-emails/commenter-emails';
+
+		$this->assertFalse( has_action( 'load-' . $plugin_page, array( 'c2c_CommenterEmails', 'handle_csv_download' ) ) );
 	}
 
 	/*
