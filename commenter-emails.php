@@ -332,8 +332,13 @@ class c2c_CommenterEmails {
 		$capability = apply_filters( 'manage_commenter_emails_options', 'manage_options' );
 
 		// Add menu item under Comments.
-		self::$plugin_page = add_comments_page( __( 'Commenter Emails', 'commenter-emails' ), __( 'Commenter Emails', 'commenter-emails' ),
-			$capability, self::$plugin_basename, array( __CLASS__, 'admin_page' ) );
+		self::$plugin_page = add_comments_page(
+			__( 'Commenter Emails', 'commenter-emails' ),
+			__( 'Commenter Emails', 'commenter-emails' ),
+			$capability,
+			self::$plugin_basename,
+			array( __CLASS__, 'admin_page' )
+		);
 	}
 
 	/**
@@ -369,7 +374,7 @@ class c2c_CommenterEmails {
 	 *
 	 * @return array
 	 */
-	 protected static function get_post_ids() {
+	protected static function get_post_ids() {
 		$key = 'c2c-commenter-emails-post-ids';
 		if ( ! isset( $_GET[ $key ] ) || ! $_GET[ $key ] ) {
 			return array();
