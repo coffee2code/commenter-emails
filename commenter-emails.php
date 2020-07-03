@@ -2,9 +2,9 @@
 /**
  * Plugin Name: Commenter Emails
  * Version:     2.6
- * Plugin URI:  http://coffee2code.com/wp-plugins/commenter-emails/
+ * Plugin URI:  https://coffee2code.com/wp-plugins/commenter-emails/
  * Author:      Scott Reilly
- * Author URI:  http://coffee2code.com/
+ * Author URI:  https://coffee2code.com/
  * Text Domain: commenter-emails
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
