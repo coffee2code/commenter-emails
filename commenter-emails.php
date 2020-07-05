@@ -502,7 +502,7 @@ class c2c_CommenterEmails {
 
 		$screen = get_current_screen();
 
-		if ( $screen->id != self::$plugin_page ) {
+		if ( $screen->id !== self::$plugin_page ) {
 			return;
 		}
 
