@@ -423,7 +423,7 @@ class c2c_CommenterEmails {
 
 		if ( self::should_show_email_addresses() ) {
 			echo '<div class="wrap">';
-			echo '<h2>' . __( 'All Commenter Emails', 'commenter-emails' ) . '</h2>';
+			echo '<h2>' . __( 'All Commenter Emails', 'commenter-emails' ) . "</h2>\n";
 
 			if ( $emails ) {
 				echo '<table class="commenter-emails-table">';
@@ -435,7 +435,7 @@ class c2c_CommenterEmails {
 					echo '<td>' . make_clickable( esc_html( $item[2] ) ) . '</td></tr>';
 				}
 
-				echo '</table>';
+				echo "</table>\n";
 			}
 
 			echo '<p>';
@@ -458,8 +458,8 @@ class c2c_CommenterEmails {
 			} else {
 				printf( __( '%s commenter emails listed.', 'commenter-emails' ), $emails_count );
 			}
-			echo '</p>';
-			echo '</div>';
+			echo "</p>\n";
+			echo "</div>\m";
 		}
 
 		if ( self::should_show_csv_button() ) {
@@ -474,20 +474,20 @@ class c2c_CommenterEmails {
 			_e( 'Include commenter website?', 'commenter-emails' );
 			echo ')<input type="hidden" name="page" value="' . esc_attr( $_GET['page'] ) . '" />';
 			echo '<input type="hidden" name="download_csv" value="1" />';
-			echo '</form></p></div>';
+			echo "</form></p></div>\n";
 		}
 
 		echo '<div class="wrap">';
 		echo '<p class="description">';
 		_e( 'NOTE: If you would like to list only commenters for selected posts, use the "Help" tab above to specify those posts.', 'commenter-emails' );
 		echo '</p>';
-		echo '</div>';
+		echo "</div>\n";
 
 		echo '<div id="c2c-ce" class="wrap"><div>';
 		printf( __( 'This plugin brought to you by <a href="%s">Scott Reilly, aka coffee2code</a>.', 'commenter-emails' ), 'https://coffee2code.com' );
 		echo '<span><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=6ARCFJ9TX3522" title="' . esc_attr__( 'Please consider a donation', 'commenter-emails' ) . '">';
 		_e( 'Did you find this plugin useful?', 'commenter-emails' );
-		echo '</a></span></div></div>';
+		echo "</a></span></div></div>\n";
 	}
 
 	/**
