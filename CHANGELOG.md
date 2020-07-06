@@ -1,7 +1,7 @@
 # Changelog
 
 ## _(in-progress)_
-* New: Add TODO.md and move existing TODO list from top of main plugin file into it
+* New: Add TODO.md and move existing TODO list from top of main plugin file into it (and add to it)
 * Change: Add newlines in output after block-level elements
 * Change: Make an overlooked string translatable
 * Change: Note compatibility through WP 5.4+

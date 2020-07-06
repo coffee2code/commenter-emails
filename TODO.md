@@ -8,5 +8,6 @@ The following list comprises ideas, suggestions, and known issues, all of which 
 * Move settings page export setting from Help panel to Screen Options panel
 * Ability to limit by date and post categories (and by extension: post ID exclusion, post author, tag, etc)
   See: https://wordpress.org/support/topic/how-to-limit-email-by-date-and-post-category/
+* Add unit tests for: `admin_page()`, `get_post_ids()` (even if indirectly due to being protected), `handle_csv_download()` (and its filters), `help_tabs()`
 
 Feel free to make your own suggestions or champion for something already on the list (via the [plugin's support forum on WordPress.org](https://wordpress.org/support/plugin/commenter-emails/) or on [GitHub](https://github.com/coffee2code/commenter-emails/) as an issue or PR).
