@@ -7,6 +7,7 @@
 * Change: Note compatibility through WP 5.4+
 * Change: Update links to coffee2code.com to be HTTPS
 * Change: Tweak code formatting
+* Fix: Add a space before lists in changelog for v2.6 in readme.txt to enable Markdown list formatting to happen in Plugin Directory
 * Unit tests:
     * New: Add tests for `admin_menu()`, `register_admin_menu()`
     * Change: Use HTTPS for link to WP SVN repository in bin script for configuring unit tests
