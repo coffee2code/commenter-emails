@@ -6,7 +6,7 @@ License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 Requires at least: 4.1
 Tested up to: 5.4
-Stable tag: 2.6
+Stable tag: 2.6.1
 
 Extract a listing of data for all commenters (email addresses, names, URLs), and an option to export that data as a CSV file.
 
@@ -168,6 +168,25 @@ add_filter( 'c2c_commenter_emails_field_separator', 'change_ce_field_separator' 
 
 == Changelog ==
 
+= 2.6.1 (2020-07-05) =
+Highlights:
+
+* This minor release improves markup output formatting, adds a TODO.md file, updates a few URLs to be HTTPS, expands unit testing, and notes compatibility through WP 5.4+.
+
+Details:
+
+* New: Add TODO.md and move existing TODO list from top of main plugin file into it (and add to it)
+* Change: Add newlines in output after block-level elements
+* Change: Make an overlooked string translatable
+* Change: Note compatibility through WP 5.4+
+* Change: Update links to coffee2code.com to be HTTPS
+* Change: Tweak code formatting
+* Unit tests:
+    * New: Add tests for `admin_menu()`, `register_admin_menu()`
+    * Change: Use HTTPS for link to WP SVN repository in bin script for configuring unit tests
+    * Change: Remove unnecessary unregistering of hooks in `tearDown()`
+    * Change: Add more spacing around "Tests" section separator
+
 = 2.6 (2020-01-01) =
 Highlights:
 
@@ -195,30 +214,13 @@ Details:
 * Change: Update unit test install script and bootstrap to use latest WP unit test repo
 * Change: Note compatibility through WP 5.2+
 
-= 2.5 (2019-04-17) =
-* New: Add README.md file
-* New: Add CHANGELOG.md file and move all but most recent changelog entries into it
-* New: Add inline documentation for hooks
-* New: Add GitHub link to readme.txt
-* Change: Initialize plugin on 'plugins_loaded' action instead of on load
-* Change: Merge `do_init()` into `init()`
-* Change: Prevent object instantiation
-    * Add private `__construct()`
-    * Add private `__wakeup()`
-* Change: Cast return values for a number of hooks to boolean or array
-* Change: (Hardening) Encode plugin basename before use as part of a URL
-* Change: Add missing translation textdomain
-* Change: Unit tests: Minor whitespace tweaks to bootstrap
-* Change: Note compatibility through WP 5.1+
-* Change: Rename readme.txt section from 'Filters' to 'Hooks'
-* Change: Modify formatting of hook name in readme to prevent being uppercased when shown in the Plugin Directory
-* Change: Update copyright date (2019)
-* Change: Update License URI to be HTTPS
-
 _Full changelog is available in [CHANGELOG.md](https://github.com/coffee2code/commenter-emails/blob/master/CHANGELOG.md)._
 
 
 == Upgrade Notice ==
+
+= 2.6.1 =
+Minor update: improved markup output formatting, added a TODO.md file, updated a few URLs to be HTTPS, expanded unit testing, and noted compatibility through WP 5.4+.
 
 = 2.6 =
 Minor update: noted compatibility through WP 5.3+, refactored some of the code, expanded unit testing, and updated copyright date (2020)

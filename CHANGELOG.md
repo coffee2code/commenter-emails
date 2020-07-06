@@ -1,6 +1,13 @@
 # Changelog
 
-## _(in-progress)_
+## 2.6.1 _(2020-07-05)_
+
+### Highlights:
+
+This minor release improves markup output formatting, adds a TODO.md file, updates a few URLs to be HTTPS, expands unit testing, and notes compatibility through WP 5.4+.
+
+### Details:
+
 * New: Add TODO.md and move existing TODO list from top of main plugin file into it (and add to it)
 * Change: Add newlines in output after block-level elements
 * Change: Make an overlooked string translatable
